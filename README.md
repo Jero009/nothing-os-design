@@ -14,6 +14,11 @@ implementation (labeled **[impl]**). Every claim is audited in
 > Lettera fonts, icon artwork) are included or shipped — only open-licensed
 > stand-ins are recommended.
 
+![Nothing OS element mockups — dark and light, built from the measured tokens](docs/mockup-elements.png)
+
+*Element mockups built from the measured tokens — interactive version:
+[`docs/mockup-elements.html`](docs/mockup-elements.html)*
+
 ## Highlights — the parts everyone gets wrong
 
 1. **Active states invert, they don't colorize.** On a real device: switch ON =
