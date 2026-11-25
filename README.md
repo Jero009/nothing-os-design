@@ -114,9 +114,24 @@ The spec uses these open (SIL OFL 1.1) stand-ins:
 
 - **Designing an app/theme**: start with `docs/tokens.md`, follow the accent
   decision table, check your result against the guardrails in the Highlights.
+- **Building it**: grab [`docs/tokens.css`](docs/tokens.css) (drop-in custom
+  properties) or [`docs/tokens.json`](docs/tokens.json) (any tool that reads
+  design tokens) — values are labeled official/impl.
 - **Agent use**: copy `skill/` into your Hermes skills directory.
 - **Verifying a claim**: `docs/fact-check.md` lists the verdict and source for
   every load-bearing number.
+
+## Share & community
+
+- **Live site**: https://jero009.github.io/nothing-os-design/ (this spec,
+  served straight from `docs/`)
+- **Interactive gallery**: https://jero009.github.io/nothing-os-design/mockup-elements.html
+- **Feedback & ideas**: [GitHub Discussions](https://github.com/Jero009/nothing-os-design/discussions)
+  — measured corrections especially welcome; bring a screenshot and the
+  claim will be audited like every other number.
+- **Versioned**: each spec revision ships as a release
+  ([latest](https://github.com/Jero009/nothing-os-design/releases)) — pin a
+  version instead of tracking `main`.
 
 ## License
 
