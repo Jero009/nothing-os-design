@@ -133,6 +133,24 @@ The spec uses these open (SIL OFL 1.1) stand-ins:
   ([latest](https://github.com/Jero009/nothing-os-design/releases)) — pin a
   version instead of tracking `main`.
 
+## AI disclosure
+
+This spec was produced **with heavy AI assistance**. It is authored and
+maintained by Jernej Peter working with an AI coding agent
+([Hermes Agent](https://hermes-agent.nousresearch.com/docs)), which drafted
+the documents, extracted and cross-checked values from public app sources,
+built the element gallery and this site, and handled releases.
+
+- **Every load-bearing number is audited** in
+  [`docs/fact-check.md`](docs/fact-check.md) with its source — that audit
+  layer exists precisely because AI drafted the claims. Treat nothing as
+  true because the spec says so; check the audit.
+- Device measurements came from screenshots taken by a human on a real
+  Nothing OS 5 phone. Third-party cross-checks were read from public source
+  code, with file paths cited in the docs.
+- Direction, review, and every commit and release decision were
+  human-approved before publishing.
+
 ## License
 
 MIT — see [LICENSE](LICENSE). Screenshots are provided as design reference
