@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nothing OS design — measured spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#000000;--card:#1B1B1B;--fg:#fff;--dim:rgba(255,255,255,.55);--line:rgba(255,255,255,.1);--accent:#D71921}
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--fg);font-family:"Geist",system-ui,sans-serif;max-width:760px;margin:0 auto;padding:48px 20px 64px}
+  .k{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+  h1{font-size:30px;font-weight:700;letter-spacing:.02em;margin-bottom:8px}
+  .lede{color:var(--dim);line-height:1.6;margin-bottom:28px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+  a.card{display:block;background:var(--card);border-radius:14px;padding:18px;text-decoration:none;color:var(--fg);transition:opacity .14s}
+  a.card:hover{opacity:.8}
+  a.card b{display:block;font-size:15px;font-weight:600;margin-bottom:4px}
+  a.card span{color:var(--dim);font-size:12.5px;line-height:1.5;display:block}
+  .note{margin-top:28px;padding:16px;background:var(--card);border-radius:14px;color:var(--dim);font-size:13px;line-height:1.6}
+  .note b{color:var(--fg)}
+  code{font-family:"Geist Mono",monospace;font-size:.9em}
+</style>
+</head>
+<body>
+  <div class="k">Nothing OS design · measured spec · v1.3.0</div>
+  <h1>Build apps that look Nothing.</h1>
+  <p class="lede">A pixel-measured, source-checked design specification for the
+  Nothing OS / Nothing OS 5 visual language — tokens, typography, components,
+  haptics &amp; sound. Nothing publishes no official token spec: everything here
+  is either from Nothing's own materials (<b>[official]</b>) or measured from a
+  real device / working apps (<b>[impl]</b>), audited claim-by-claim.</p>
+  <div class="grid">
+    <a class="card" href="mockup-elements.html"><b>Element gallery</b><span>Interactive mockups — dark &amp; light elements, native widgets, app rows, haptic vocabulary.</span></a>
+    <a class="card" href="tokens.md"><b>Tokens</b><span>Brand palette, dark/light, OS 5 deltas, complete 2×2 style×mode matrix, accent decision table.</span></a>
+    <a class="card" href="typography.md"><b>Typography</b><span>Font roles, type scale, Nothing's official NType82/NDot specs, the OFL stand-ins.</span></a>
+    <a class="card" href="components.md"><b>Components</b><span>Buttons, switches, chips, dot-matrix icons, media-player patterns, motion, a11y.</span></a>
+    <a class="card" href="feedback.md"><b>Haptics &amp; sound</b><span>Platform APIs, the semantic haptic vocabulary, alarm-only sound with ducking, Glyph SDK.</span></a>
+    <a class="card" href="third-party-case-studies.md"><b>Case study</b><span>MissingCore/Music — a second shipped implementation, cross-checked value by value.</span></a>
+    <a class="card" href="fact-check.md"><b>Fact-check</b><span>Claim-by-claim audit with verdicts and sources — the credibility layer.</span></a>
+    <a class="card" href="tokens.json"><b>tokens.json / tokens.css</b><span>Machine-readable exports for devs and designers.</span></a>
+  </div>
+  <div class="note"><b>Not affiliated with Nothing Technology Ltd.</b> "Nothing OS" and
+  related marks belong to their owner. No Nothing proprietary assets (NDot, NType,
+  Lettera, icon artwork) are included — only open-licensed stand-ins (Geist, Geist
+  Mono, Doto, Space Grotesk, NDot JP) are recommended. Spec is MIT-licensed;
+  community feedback lives in
+  <a style="color:var(--fg)" href="https://github.com/Jero009/nothing-os-design/discussions">GitHub Discussions</a>.</div>
+</body>
+</html>

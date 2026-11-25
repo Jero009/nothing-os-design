@@ -1,0 +1,88 @@
+/*
+ * Nothing OS design — measured spec tokens (v1.3.0)
+ * https://github.com/Jero009/nothing-os-design — MIT
+ * [official] = Nothing's own materials; [impl] = working implementation value.
+ * Canonical on-screen red: #D71921 (device-measured; #D71920/#D71A21 are
+ * one-bit family variants). Full tables + audit: docs/tokens.md, docs/fact-check.md
+ */
+
+:root {
+  /* classic dark (default) [impl] */
+  --nt-bg: #000000;                        /* true OLED black — never near-black */
+  --nt-surface: #1A1A1A;                   /* system measures #1B1B1B — same family */
+  --nt-surface-2: #242424;                 /* elevated / pressed */
+  --nt-tile: rgba(255, 255, 255, 0.055);   /* inset panel */
+  --nt-border: rgba(255, 255, 255, 0.08);
+  --nt-border-strong: rgba(255, 255, 255, 0.12);
+  --nt-ink: 255, 255, 255;
+  --nt-text: #FFFFFF;
+  --nt-text-dim: rgba(255, 255, 255, 0.5);
+  --nt-text-glow: rgba(255, 255, 255, 0.18); /* decoration only */
+  --nt-accent: #D71A21;                    /* impl token; canonical #D71921 */
+  --nt-accent-press: #B21319;              /* accent darkens ~10–15% on press, never lightens */
+  --nt-on-accent: #FFFFFF;
+  --nt-data-positive: rgb(34, 197, 94);
+  --nt-data-goal: #FFD700;
+  --nt-font-body: "Space Grotesk", system-ui, sans-serif;
+  --nt-font-display: "Doto", monospace;
+  --nt-font-mono: "Space Mono", monospace;
+  --nt-tracking-label: 0.12em;
+  --nt-tracking-kicker: 0.18em;
+  --nt-radius-sm: 8px;
+  --nt-radius-md: 16px;
+  --nt-radius-lg: 24px;
+  --nt-radius-pill: 999px;
+  --nt-motion-fast: 140ms;
+  --nt-motion-std: 280ms;
+  --nt-motion-slow: 400ms;
+  --nt-ease-entrance: cubic-bezier(0.2, 0, 0, 1);
+  --nt-ease-std: cubic-bezier(0.4, 0, 0.2, 1);
+  --nt-press-scale: 0.97;
+}
+
+html.theme-light {
+  --nt-bg: #EBEBEB;
+  --nt-surface: #FFFFFF;
+  --nt-surface-2: #E2E2E2;
+  --nt-tile: rgba(0, 0, 0, 0.055);
+  --nt-border: rgba(0, 0, 0, 0.08);
+  --nt-border-strong: rgba(0, 0, 0, 0.14);
+  --nt-ink: 10, 10, 10;
+  --nt-text: #0A0A0A;
+  --nt-text-dim: rgba(0, 0, 0, 0.5);
+  --nt-data-positive: rgb(21, 128, 61);
+  --nt-data-goal: #B8860B;
+}
+
+/* OS 5 — re-points only (fonts + material + radii) */
+html.theme-os5 {
+  --nt-font-body: "Geist", system-ui, sans-serif;      /* [official face] */
+  --nt-font-display: "Geist Mono", monospace;          /* [official face] */
+  --nt-font-mono: "Geist Mono", monospace;
+  --nt-tracking-label: 0.10em;
+  --nt-tracking-kicker: 0.16em;
+  --nt-radius-sm: 12px;
+  --nt-radius-md: 20px;
+  --nt-radius-lg: 28px;
+  --nt-surface: rgba(20, 20, 20, 0.66);                /* + frost, below */
+  --nt-surface-2: rgba(44, 44, 44, 0.72);
+  --nt-surface-fallback: #141414;                      /* solid overlays */
+  --nt-frost: blur(24px) saturate(1.4);
+  --nt-border: rgba(255, 255, 255, 0.10);
+  --nt-border-strong: rgba(255, 255, 255, 0.16);
+  --nt-text-dim: rgba(255, 255, 255, 0.55);
+  --nt-dot-grid: rgba(255, 255, 255, 0.045);
+}
+
+html.theme-os5.theme-light {
+  --nt-surface: rgba(255, 255, 255, 0.72);
+  --nt-surface-2: rgba(255, 255, 255, 0.9);
+  --nt-surface-fallback: #FFFFFF;
+  --nt-border: rgba(0, 0, 0, 0.08);
+  --nt-border-strong: rgba(0, 0, 0, 0.14);
+  --nt-text-dim: rgba(0, 0, 0, 0.5);
+  --nt-dot-grid: rgba(0, 0, 0, 0.05);
+}
+
+/* Native home-screen widgets can't frost (RemoteViews): */
+/* panel #D9141414 · radius 28dp · hairline #1FFFFFFF             */
