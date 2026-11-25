@@ -106,8 +106,10 @@
     padding:22px;border-radius:var(--nt-radius-lg);
     background:linear-gradient(160deg,#1d2433 0%,#3a2c4f 45%,#6b3550 100%)}
   html.theme-light .wgrid{background:linear-gradient(160deg,#cdd6e6 0%,#e2d5ee 45%,#f2c9d8 100%)}
-  .wcard{background:#1B1B1B;border-radius:24px;padding:18px;border:1px solid rgba(255,255,255,.12);color:#fff}
-  html.theme-light .wcard{background:#F1F1F1;border-color:rgba(0,0,0,.08);color:#0A0A0A}
+  .wcard{background:#1B1B1B;border-radius:24px;padding:18px;color:#fff}
+  html.theme-os5 .wcard{background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.1)}
+  html.theme-light .wcard{background:#F1F1F1;color:#0A0A0A}
+  html.theme-os5.theme-light .wcard{background:rgba(255,255,255,.55);border-color:rgba(0,0,0,.08);color:#0A0A0A}
   .wclock{font-family:"Doto",monospace;font-weight:500;font-size:38px;line-height:1;letter-spacing:.04em}
   .wkick{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:8px}
   html.theme-light .wkick{color:rgba(0,0,0,.5)}
@@ -303,6 +305,7 @@
         <div class="wfoot">Controls and state — never a per-second playhead.</div>
       </div>
     </div>
+    <div class="foot-note">Classic panels are opaque exact-value (#1B1B1B / #F1F1F1), borderless. In OS 5 they turn translucent over the wallpaper (≈70% black scrim / ≈50% white wash) and gain exactly one hairline.</div>
   </section>
 
   <!-- ============ TOKENS ============ -->
