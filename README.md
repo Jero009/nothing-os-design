@@ -46,7 +46,8 @@ implementation (labeled **[impl]**). Every claim is audited in
 |---|---|
 | [`docs/tokens.md`](docs/tokens.md) | Full token tables: brand palette, classic dark/light, OS 5 deltas, complete 2×2 style×mode matrix, accent decision table — all measured values |
 | [`docs/typography.md`](docs/typography.md) | Font roles & stacks, per-element type scale (size/weight/tracking), Nothing's official leading/tracking specs |
-| [`docs/components.md`](docs/components.md) | Buttons, switches, chips, lists, alerts, dot-matrix icon construction (9×9 / 25×25), motion, accessibility |
+| [`docs/components.md`](docs/components.md) | Buttons, switches, chips, lists, alerts, dot-matrix icon construction (9×9 / 25×25), media-player patterns, motion, accessibility |
+| [`docs/third-party-case-studies.md`](docs/third-party-case-studies.md) | Source-checked study of a second shipped implementation ([MissingCore/Music](https://github.com/MissingCore/Music)) — palette cross-checks, accent ramps, media-player patterns |
 | [`docs/fact-check.md`](docs/fact-check.md) | Claim-by-claim audit with verdicts and sources — the credibility layer |
 | [`docs/screenshots/`](docs/screenshots/) | Sanitized reference screenshots covering all four style×mode combinations |
 | [`skill/SKILL.md`](skill/SKILL.md) | The same spec packaged as a [Hermes Agent](https://hermes-agent.nousresearch.com/docs) skill (drop-in for agent use) |
@@ -64,6 +65,12 @@ that has shipped through multiple releases.
 Primary sources: Nothing OS 5.0 announcement (nothing.community, 2026-08-25),
 nothing.tech OS 5 page, nothing.wiki brand reference, Vercel Geist / Google
 Fonts Doto / Florian Karsten Space Grotesk licensing pages.
+
+Values are additionally cross-checked against a second shipped third-party
+implementation, [MissingCore/Music](https://github.com/MissingCore/Music)
+(AGPL-3.0) — an independent Nothing-inspired app whose source was read (not
+copied) for the 2026-11-25 cross-check; see
+[`docs/third-party-case-studies.md`](docs/third-party-case-studies.md).
 
 ## Fonts (legal note)
 

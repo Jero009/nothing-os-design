@@ -101,3 +101,34 @@ full numbers in tokens.md "MEASURED FROM DEVICE"). Key confirmations:
   survives as tiny icon chips (#E9D2FD) + swatches; everything else stays
   monochrome.
 - ✅ Hero titles use the NType82 serif typewriter face, functional text Geist.
+
+## Second-implementation cross-check (2026-11-25, MissingCore/Music)
+
+Cross-checked against [MissingCore/Music](https://github.com/MissingCore/Music)
+(AGPL-3.0, Google Play + GitHub, self-described "A Nothing inspired local
+music player") — a second independent, source-checkable implementation of the
+Nothing language in a non-Nothing app. Full study:
+[`third-party-case-studies.md`](third-party-case-studies.md). Values read from
+`mobile/src/constants/Styles.ts`, `src/modules/customization/theme/core/constants.ts`,
+`src/modules/widget/constants/Config.ts`, `assets/fonts/`, `THIRD_PARTY.md`.
+
+| Claim | Verdict | Source |
+|---|---|---|
+| `#D71921` as the primary/signal red | ✅ exact second source | `Styles.ts` nRed50 = #D71921; theme `primary` |
+| `#FFC700` as secondary/data color | ✅ exact | `Styles.ts` yellow50 = #FFC700; theme `secondary` |
+| Dark app surface = true `#000000` (OLED rule) | ✅ exact | theme `surface: neutral0` |
+| Elevated dark container `#1C1C1C` | ✅ exact | matches the device-measured circle icon buttons; theme `surfaceContainerLowest` |
+| Light containers `#D1D1D1` | ✅ exact | matches measured light QS off-tiles; `neutral83` |
+| Light page surface `#F2F2F2` vs measured `#F1F1F1` | ✅ 1 bit off | theme `surface` |
+| Press/dim DARKENS the accent (~10–15%) | ✅ pattern in both impls | nRed50→nRed40 `#AE141B` (MissingCore); `#D71A21`→`#B21319` (dashbord) |
+| Two-red system: signal `#D71921` vs error `#C8102E` | ⚠️ nuance | MissingCore theme `primary` vs `error`; this spec documented `#C8102E` as print-only for Nothing system usage — apps may adopt it as the semantic error hue while keeping `#D71921` as signal |
+| Grey ramp granularity (7-step dark container ladder `#121212…#3B3B3B`) | 📌 impl | both impls differ from the measured single `#1B1B1B` system surface; apps need more steps than the OS shows |
+| Third-party Nothing integration via standard MediaSession only | ✅ | Nothing Media Player widget + Glyph Music Visualization work with the app without proprietary APIs (`docs/nothing-interactions.md` in that repo) |
+| **NDot JP** (`NDot日本語`, x.com/NdotJP_Font) exists as an OFL-1.1 community NDot derivative | ✅ | `THIRD_PARTY.md` line 38; bundled as `Ndot-77_JP_Extended.ttf` |
+| Bundling Nothing's proprietary NType82 without attribution | ⚠️ risk observed (do not copy) | `assets/fonts/NType82-*.otf` present; no license entry in `THIRD_PARTY.md`/`licenses.json`; nothing.wiki lists NType82 as brand-restricted |
+
+Sources (added): github.com/MissingCore/Music — `Styles.ts`,
+`theme/core/constants.ts`, `widget/constants/Config.ts`, `Waveform.tsx`,
+`Vinyl.tsx`, `SeekBar.tsx`, `marquee.tsx`, `docs/widgets.md`,
+`docs/nothing-interactions.md`, `assets/fonts/`, `THIRD_PARTY.md`
+(accessed 2026-11-25, dev history through v3.9.x).

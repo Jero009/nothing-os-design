@@ -94,6 +94,38 @@ VALUES, never literals in components.
 - Data encodings identical between app and widget; skin switch re-renders via
   a pushed themeStyle field, defaulting to classic on garbage.
 
+## Media player patterns [impl — MissingCore/Music, source-checked 2026-11]
+
+Second-source study: [`third-party-case-studies.md`](third-party-case-studies.md).
+App-side patterns — the OS publishes no media-component spec.
+
+- **Seek interaction**: the thumb and the elapsed label preview the dragged
+  position while dragging; the real seek commits **on release**. Two
+  independent implementations (dashbord, MissingCore) ship this — treat it as
+  the Nothing-style default. Streams without a duration never preview (they
+  cannot seek).
+- **Waveform seekbar** (only when the app owns the audio file): 2px bars on a
+  1.75px gap, min bar height 4px, rounded caps, amplitudes normalized to the
+  track max, cached per track; progress = hard color edge along the same
+  bars (two gradient stops at one offset). MissingCore colors played bars
+  with `primary` (red by default) and remaining bars with
+  `surfaceContainerHigh` — note the tension with the 0–2-element accent
+  budget; a full-width red hairline is the aggressive reading. The
+  conservative choice is ink for played / container-high for remaining.
+  Not applicable to remote media sessions — no waveform can be computed from
+  another app's stream.
+- **Vinyl artwork treatment** (full-screen player): artwork at half diameter
+  inside a `#1C1C1C` disc with three white groove rings (stroke ≈0.4% of
+  diameter, 7.5% opacity, radii 34%/40%/45% of the disc), center hole
+  (surface fill, light-grey stroke), 2×24px spin indicator when artwork is
+  missing. Rotation-as-seekbar (1 rotation = 24s) is playful but imprecise —
+  keep a normal drag seek for compact surfaces.
+- **Marquee on overflowing titles**: linear 24px/s, 3s pause at each end,
+  back-and-forth; titles only, never body text. Reduced-motion off-switch.
+- **Home-screen widgets: no progress tickers.** A widget that updates every
+  second for a playhead burns battery for zero glance value — show controls
+  and state, not a moving playhead (MissingCore's documented rationale).
+
 ## Motion
 
 - Durations: 140ms micro / 280ms standard / 400ms emphatic.

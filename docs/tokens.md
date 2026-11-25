@@ -17,6 +17,36 @@ Claim-by-claim audit: `fact-check.md`. Verified 2026-11.
 | Primary | N-Blue | #002F6C | data encoding only |
 | Primary | N-Yellow | #FFC700 | data encoding only |
 
+## Cross-implementation check (2026-11-25)
+
+[MissingCore/Music](https://github.com/MissingCore/Music) (AGPL-3.0 media
+player, study: [`third-party-case-studies.md`](third-party-case-studies.md))
+independently reproduces several of these values — treat them as
+cross-confirmed by a second shipped app, not just dashbord choices:
+
+| Value | Status |
+|---|---|
+| `#D71921` signal red | ✅ exact (their `nRed50`, theme primary) |
+| `#FFC700` secondary/data | ✅ exact (their `yellow50`) |
+| `#000000` dark surface | ✅ exact |
+| `#1C1C1C` low container | ✅ exact (matches measured circle buttons) |
+| `#D1D1D1` light container | ✅ exact (matches measured light QS off-tiles) |
+
+Cross-impl patterns worth adopting:
+
+- **Accent ramps** [impl — MissingCore]: red `#AE141B/#C5171F/#D71921`,
+  yellow `#E5B300/#F0BB00/#FFC700`. Use the ramp for dim/pressed states
+  instead of hand-mixed hexes.
+- **Press darkens the accent** (~10–15%), never lightens — both
+  implementations independently (`#AE141B`, `#B21319`).
+- **7-step dark container ladder** `#121212 → #1C1C1C → #212121 → #292929 →
+  #323232 → #3B3B3B` with dim text `#ADADAD` — a finer app-side ramp than the
+  4-value set below; the measured OS values (`#1B1B1B`, `#303030`) fall
+  inside it. Either ramp is legitimate [impl]; pick one per app.
+- **Two-red option** [impl — MissingCore]: signal red `#D71921` with a
+  separate semantic error red `#C8102E` (the print red). Valid app-side; keep
+  the roles fixed and never swap them.
+
 ## App tokens — classic style
 
 ### Dark (default, `:root`) [impl]

@@ -1,6 +1,6 @@
 ---
 name: nothing-os-design
-version: 1.1.0
+version: 1.2.0
 author: Hermes Agent
 license: MIT
 description: "Use when styling Nothing OS-style apps: tokens, accents."
@@ -37,10 +37,17 @@ philosophy, and the OS 5 direction. Full claim-by-claim audit with sources:
   SIL OFL 1.1); Doto (Óliver Lalan, SIL OFL 1.1, variable axes wght 100–900 /
   ROND 0–100, 6×10 dot matrix); Space Grotesk (Florian Karsten 2018, OFL 1.1,
   a proportional variant of Space Mono, Colophon Foundry 2016, OFL).
-- **Tier 3 — reference implementation:** the dashbord app
+- **Tier 3 — reference implementations:** the dashbord app
   (`~/projects/dashbord/docs/DESIGN.md`, `src/theme/variables.css`) carries
   battle-tested [impl] values; community spec `github.com/wangbh030722/
-vibe-nothing-ui-design` (SPEC/DESIGN) for dot-icon and accent-scarcity rules.
+vibe-nothing-ui-design` (SPEC/DESIGN) for dot-icon and accent-scarcity rules;
+  and [MissingCore/Music](https://github.com/MissingCore/Music) (AGPL-3.0
+  Nothing-inspired music player, Google Play + GitHub) as a second,
+  source-checkable shipped implementation — palette cross-check and
+  media-player patterns in the case study doc. Where dashbord and
+  MissingCore agree (`#D71921` red, `#FFC700` yellow, `#000000` dark
+  surface, press-darkens-accent, commit-seek-on-release), treat the value as
+  cross-confirmed.
 - Nothing's own faces (NDot 55/57, NType 82, Lettera Mono LL) and icon artwork
   are **proprietary brand assets — never ship them**. Use the OFL stand-ins.
 

@@ -35,6 +35,14 @@ Rules:
 | Space Grotesk | Florian Karsten (2018; variant of Space Mono, Colophon Foundry 2016) | SIL OFL 1.1 | 4 styles + variable |
 | Space Mono | Colophon Foundry (2016, Google Fonts) | SIL OFL 1.1 | fixed-width |
 | NDot 55 / NType 82 / Lettera Mono LL | Nothing (proprietary) | NOT licensed | never ship; extracted-firmware copies online are unofficial |
+| NDot日本語 ("NDot JP", incl. the `Ndot-77_JP_Extended` build) | community extension of NDot | SIL OFL 1.1 | the one openly-licensed NDot derivative (x.com/NdotJP_Font); covers JP glyphs; used by MissingCore/Music. Legitimate NDot-style alternative to Doto; this spec keeps Doto as default (variable, maintained). |
+
+Shipped-app observation (2026-11-25): MissingCore/Music bundles Geist +
+Geist Mono (credited OFL) and NDot JP (credited OFL) — and also ships
+`NType82-*.otf` files **without any license attribution** (nothing in its
+`THIRD_PARTY.md`/`licenses.json`). NType82 is Nothing-proprietary; treat that
+as the cautionary example, not a pattern to copy. This spec's rule stands:
+**never ship NType82/NDot/Lettera.**
 
 ## Nothing brand typography specs [official] (for composing brand-style display type)
 
