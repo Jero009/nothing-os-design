@@ -67,7 +67,7 @@
   .btn-d{background:var(--nt-accent);color:#fff;border:0}
   .sw{width:46px;height:32px;border-radius:999px;position:relative;border:0;cursor:pointer;
     background:var(--nt-surface-2);transition:background var(--nt-motion-fast) var(--nt-ease-std)}
-  .sw::after{content:'';position:absolute;width:24px;height:24px;border-radius:50%;top:4px;
+  .sw::after{content:'';position:absolute;width:24px;height:24px;border-radius:50%;top:4px;left:4px;
     background:var(--nt-text-dim);transition:left var(--nt-motion-fast) var(--nt-ease-std), background var(--nt-motion-fast) var(--nt-ease-std)}
   .sw[aria-pressed="true"]{background:var(--nt-text)}
   .sw[aria-pressed="true"]::after{left:18px;background:var(--nt-bg)}
@@ -90,9 +90,10 @@
     transition:background var(--nt-motion-fast) var(--nt-ease-std)}
   .qtile .ic{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
     font-size:15px;flex:none;background:var(--nt-surface-2);color:var(--nt-text-dim)}
-  .qtile[aria-pressed="true"]{background:var(--nt-text)}
-  .qtile[aria-pressed="true"] .ic{background:#000;color:#fff}
+  .qtile[aria-pressed="true"]{background:var(--nt-text);color:var(--nt-bg)}
+  .qtile[aria-pressed="true"] .ic{background:var(--nt-bg);color:var(--nt-text)}
   .qtile small{color:var(--nt-text-dim);font-size:11px;display:block}
+  .qtile[aria-pressed="true"] small{color:inherit;opacity:.75}
   .qtile b{font-size:13px;font-weight:600}
 
   /* dots 9x9 */
