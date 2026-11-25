@@ -5,47 +5,581 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nothing OS design — measured spec</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Doto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
 <style>
-  :root{--bg:#000000;--card:#1B1B1B;--fg:#fff;--dim:rgba(255,255,255,.55);--line:rgba(255,255,255,.1);--accent:#D71921}
   *{box-sizing:border-box;margin:0}
-  body{background:var(--bg);color:var(--fg);font-family:"Geist",system-ui,sans-serif;max-width:760px;margin:0 auto;padding:48px 20px 64px}
-  .k{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
-  h1{font-size:30px;font-weight:700;letter-spacing:.02em;margin-bottom:8px}
-  .lede{color:var(--dim);line-height:1.6;margin-bottom:28px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-  a.card{display:block;background:var(--card);border-radius:14px;padding:18px;text-decoration:none;color:var(--fg);transition:opacity .14s}
-  a.card:hover{opacity:.8}
-  a.card b{display:block;font-size:15px;font-weight:600;margin-bottom:4px}
-  a.card span{color:var(--dim);font-size:12.5px;line-height:1.5;display:block}
-  .note{margin-top:28px;padding:16px;background:var(--card);border-radius:14px;color:var(--dim);font-size:13px;line-height:1.6}
-  .note b{color:var(--fg)}
-  code{font-family:"Geist Mono",monospace;font-size:.9em}
+  html{background:#000}
+  body{
+    background:var(--nt-bg);color:var(--nt-text);
+    font-family:var(--nt-font-body),system-ui,sans-serif;
+    min-height:100vh;
+  }
+  /* OS 5 dot-grid substrate — barely-there depth cue */
+  html.theme-os5 body::before{
+    content:'';position:fixed;inset:0;pointer-events:none;
+    background-image:radial-gradient(circle, var(--nt-dot-grid, rgba(255,255,255,.045)) 1px, transparent 1px);
+    background-size:12px 12px;
+  }
+  a{color:var(--nt-text)}
+
+  /* ---------- chrome ---------- */
+  header{position:sticky;top:0;z-index:10;background:color-mix(in srgb, var(--nt-bg) 88%, transparent);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--nt-border)}
+  .bar{max-width:1100px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .brand{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--nt-text-dim);margin-right:auto}
+  .brand b{color:var(--nt-text);font-weight:600}
+  .tgl{display:flex;border:1px solid var(--nt-border);border-radius:999px;padding:3px;gap:2px}
+  .tgl button{border:0;background:transparent;color:var(--nt-text-dim);font:inherit;font-size:11px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:999px;cursor:pointer}
+  .tgl button[aria-pressed="true"]{background:var(--nt-surface-2,var(--nt-surface));color:var(--nt-text)}
+  main{max-width:1100px;margin:0 auto;padding:32px 20px 80px}
+  nav.tabs{display:flex;gap:2px;border:1px solid var(--nt-border);border-radius:999px;padding:3px;width:max-content;
+    max-width:100%;overflow:auto;margin-bottom:30px}
+  nav.tabs button{border:0;background:transparent;color:var(--nt-text-dim);font:inherit;font-size:12px;font-weight:600;
+    letter-spacing:.08em;text-transform:uppercase;padding:7px 16px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  nav.tabs button[aria-selected="true"]{background:var(--nt-text);color:var(--nt-bg)}
+  section.panel{display:none}
+  section.panel.on{display:block;animation:enter var(--nt-motion-std) var(--nt-ease-entrance)}
+  @keyframes enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){
+    section.panel.on{animation:none}
+    .chip .dot{animation:none;opacity:.7}
+  }
+
+  .k{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--nt-text-dim);margin:30px 0 12px}
+  .k:first-child{margin-top:0}
+  .lead{color:var(--nt-text-dim);font-size:13.5px;line-height:1.6;max-width:64ch;margin-bottom:6px}
+  .lead b{color:var(--nt-text)}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .foot-note{color:var(--nt-text-dim);font-size:11.5px;margin-top:10px;line-height:1.6}
+
+  /* ---------- elements ---------- */
+  .card{background:var(--nt-surface);border-radius:var(--nt-radius-lg);padding:18px}
+  html.theme-os5 .card{border:1px solid var(--nt-border);backdrop-filter:var(--nt-frost, none)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 18px;
+    border-radius:var(--nt-radius-pill);font:inherit;font-weight:600;font-size:13px;letter-spacing:.06em;
+    cursor:pointer;transition:transform var(--nt-motion-fast) var(--nt-ease-std), opacity var(--nt-motion-fast) var(--nt-ease-std)}
+  .btn:active{transform:scale(var(--nt-press-scale));opacity:.85}
+  .btn-p{background:var(--nt-text);color:var(--nt-bg);border:0}
+  .btn-g{background:transparent;color:var(--nt-text-dim);border:1px solid var(--nt-border)}
+  .btn-d{background:var(--nt-accent);color:#fff;border:0}
+  .sw{width:46px;height:32px;border-radius:999px;position:relative;border:0;cursor:pointer;
+    background:var(--nt-surface-2);transition:background var(--nt-motion-fast) var(--nt-ease-std)}
+  .sw::after{content:'';position:absolute;width:24px;height:24px;border-radius:50%;top:4px;
+    background:var(--nt-text-dim);transition:left var(--nt-motion-fast) var(--nt-ease-std), background var(--nt-motion-fast) var(--nt-ease-std)}
+  .sw[aria-pressed="true"]{background:var(--nt-text)}
+  .sw[aria-pressed="true"]::after{left:18px;background:var(--nt-bg)}
+  .chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--nt-border);border-radius:999px;
+    padding:5px 12px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--nt-text-dim)}
+  .chip .dot{width:7px;height:7px;border-radius:50%;background:var(--nt-accent);animation:pulse 1s steps(4) infinite}
+  @keyframes pulse{0%{opacity:1}50%{opacity:.25}100%{opacity:1}}
+  .seg{display:inline-flex;background:var(--nt-tile);border-radius:999px;padding:5px;gap:2px}
+  .seg button{border:0;background:transparent;font:inherit;font-size:13px;font-weight:600;color:var(--nt-text-dim);
+    padding:6px 16px;border-radius:999px;cursor:pointer}
+  .seg button[aria-pressed="true"]{background:var(--nt-text);color:var(--nt-bg)}
+  .tile{background:var(--nt-tile);border-radius:var(--nt-radius-sm);padding:12px 14px}
+  .tile span{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--nt-text-dim);margin-bottom:6px}
+  .tile strong{font-family:var(--nt-font-mono),monospace;font-weight:500;font-size:20px}
+  .input{width:100%;height:42px;border-radius:var(--nt-radius-sm);background:var(--nt-surface-2);
+    padding:0 14px;font:inherit;font-size:14px;display:flex;align-items:center;color:var(--nt-text-dim);border:0}
+  .qs{display:flex;gap:10px;flex-wrap:wrap}
+  .qtile{flex:1;min-width:130px;background:var(--nt-surface);border-radius:18px;padding:12px;display:flex;
+    align-items:center;gap:10px;cursor:pointer;border:0;font:inherit;color:var(--nt-text);text-align:left;
+    transition:background var(--nt-motion-fast) var(--nt-ease-std)}
+  .qtile .ic{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:15px;flex:none;background:var(--nt-surface-2);color:var(--nt-text-dim)}
+  .qtile[aria-pressed="true"]{background:var(--nt-text)}
+  .qtile[aria-pressed="true"] .ic{background:#000;color:#fff}
+  .qtile small{color:var(--nt-text-dim);font-size:11px;display:block}
+  .qtile b{font-size:13px;font-weight:600}
+
+  /* dots 9x9 */
+  .dots9{display:grid;grid-template-columns:repeat(9,10px);gap:3px;width:max-content}
+  .dots9 b{width:10px;height:10px;border-radius:50%;background:transparent}
+  .dots9 b.lit{background:var(--nt-text)}
+
+  /* ---------- widgets ---------- */
+  .wgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;
+    padding:22px;border-radius:var(--nt-radius-lg);
+    background:linear-gradient(160deg,#1d2433 0%,#3a2c4f 45%,#6b3550 100%)}
+  html.theme-light .wgrid{background:linear-gradient(160deg,#cdd6e6 0%,#e2d5ee 45%,#f2c9d8 100%)}
+  .wcard{background:#1B1B1B;border-radius:24px;padding:18px;border:1px solid #1FFFFFFF;color:#fff}
+  html.theme-light .wcard{background:#F1F1F1;border-color:rgba(0,0,0,.08);color:#0A0A0A}
+  .wclock{font-family:"Doto",monospace;font-weight:500;font-size:38px;line-height:1;letter-spacing:.04em}
+  .wkick{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:8px}
+  html.theme-light .wkick{color:rgba(0,0,0,.5)}
+  .wring{display:flex;align-items:center;gap:12px}
+  .wring b{font-family:var(--nt-font-mono),monospace;font-weight:500;font-size:22px}
+  html.theme-light .wring circle.track{stroke:rgba(0,0,0,.14)}
+  .wmus .art{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#b06,#fa0)}
+  .wmus .meta{flex:1;min-width:0}
+  .wmus .t{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .wmus .a{color:rgba(255,255,255,.55);font-size:11px}
+  html.theme-light .wmus .a{color:rgba(0,0,0,.5)}
+  .wmus .ctr{display:flex;gap:14px;justify-content:center;margin-top:12px}
+  .wmus .ctr i{font-style:normal;font-size:15px;color:rgba(255,255,255,.9)}
+  html.theme-light .wmus .ctr i{color:rgba(0,0,0,.7)}
+  .wmus .ctr .pp{background:var(--nt-text);color:var(--nt-bg);border-radius:50%;width:34px;height:34px;
+    display:inline-flex;align-items:center;justify-content:center;font-size:12px}
+  .wfoot{font-size:11.5px;color:var(--nt-text-dim);margin-top:12px;line-height:1.6}
+
+  /* ---------- tokens ---------- */
+  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+  .swc{cursor:pointer;border:1px solid var(--nt-border);border-radius:var(--nt-radius-sm);overflow:hidden;background:var(--nt-surface)}
+  .swc .ch{height:52px;display:flex;align-items:flex-end;justify-content:flex-end;padding:6px}
+  .swc .ch em{font-style:normal;font-size:9px;letter-spacing:.08em;background:rgba(0,0,0,.55);color:#fff;
+    border-radius:4px;padding:2px 5px;opacity:0;transition:opacity var(--nt-motion-fast)}
+  .swc.copied .ch em{opacity:1}
+  .swc .nm{padding:8px 10px}
+  .swc .nm b{font-size:11px;font-weight:600;display:block}
+  .swc .nm code{font-family:var(--nt-font-mono),monospace;font-size:10px;color:var(--nt-text-dim)}
+  .rad{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+  .rad .rb{background:var(--nt-tile);border:1px solid var(--nt-border);width:88px;height:64px}
+  .rad .rb small{display:block;margin-top:6px;font-size:10px;color:var(--nt-text-dim);font-family:var(--nt-font-mono),monospace;text-align:center}
+  table.dec{width:100%;border-collapse:collapse;font-size:12.5px}
+  table.dec th{text-align:left;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--nt-text-dim);
+    font-weight:600;padding:8px 10px;border-bottom:1px solid var(--nt-border)}
+  table.dec td{padding:8px 10px;border-bottom:1px solid color-mix(in srgb, var(--nt-text) 4%, transparent)}
+  table.dec td.no{color:var(--nt-text-dim)}
+  table.dec td.yes{color:var(--nt-accent);font-weight:600}
+
+  /* ---------- type ---------- */
+  .spec{border-top:1px solid var(--nt-border);padding:16px 0}
+  .spec .lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--nt-text-dim)}
+  .kicker{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--nt-text-dim)}
+  .label{font-size:12px;font-weight:500;letter-spacing:.10em;text-transform:uppercase}
+  .metric{font-family:var(--nt-font-mono),monospace;font-weight:500;font-size:22px}
+  .body-t{font-size:14px;line-height:1.5;color:var(--nt-text-dim);max-width:60ch}
+  .hero-doto{font-family:"Doto",monospace;font-weight:500;font-size:56px;line-height:1}
+
+  /* ---------- feedback ---------- */
+  .hrow{display:grid;grid-template-columns:110px 120px 1fr 90px;gap:14px;align-items:center;
+    padding:10px 0;border-bottom:1px solid color-mix(in srgb, var(--nt-text) 4%, transparent);font-size:12.5px}
+  .hrow .g{font-weight:600}
+  .hrow .e{font-family:var(--nt-font-mono),monospace;font-size:11px;color:var(--nt-text-dim)}
+  .hrow .bar{height:6px;border-radius:999px;background:var(--nt-tile);position:relative}
+  .hrow .bar i{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:var(--nt-text);transition:width var(--nt-motion-std) var(--nt-ease-entrance)}
+  .hrow .ms{font-family:var(--nt-font-mono),monospace;font-size:11px;color:var(--nt-text-dim);text-align:right}
+  .role{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:720px){.role{grid-template-columns:1fr}.hrow{grid-template-columns:90px 100px 1fr 70px}}
+  .rcard{background:var(--nt-surface);border-radius:var(--nt-radius-md);padding:16px}
+  .rcard b{font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+  .rcard p{color:var(--nt-text-dim);font-size:12.5px;line-height:1.6;margin-top:6px}
+
+  /* ---------- docs ---------- */
+  .docs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+  a.card2{display:block;background:var(--nt-surface);border-radius:var(--nt-radius-md);padding:16px;
+    text-decoration:none;color:var(--nt-text);transition:opacity var(--nt-motion-fast)}
+  a.card2:hover{opacity:.8}
+  a.card2 b{display:block;font-size:13.5px;font-weight:600;margin-bottom:4px}
+  a.card2 span{color:var(--nt-text-dim);font-size:12px;line-height:1.55;display:block}
+  .note{margin-top:24px;padding:16px;background:var(--nt-surface);border-radius:var(--nt-radius-md);
+    color:var(--nt-text-dim);font-size:12.5px;line-height:1.6}
+  .note b{color:var(--nt-text)}
+  :focus-visible{outline:1px solid rgba(255,255,255,.5);outline-offset:2px}
+  html.theme-light :focus-visible{outline-color:rgba(0,0,0,.5)}
 </style>
 </head>
 <body>
-  <div class="k">Nothing OS design · measured spec · v1.3.0</div>
-  <h1>Build apps that look Nothing.</h1>
-  <p class="lede">A pixel-measured, source-checked design specification for the
-  Nothing OS / Nothing OS 5 visual language — tokens, typography, components,
-  haptics &amp; sound. Nothing publishes no official token spec: everything here
-  is either from Nothing's own materials (<b>[official]</b>) or measured from a
-  real device / working apps (<b>[impl]</b>), audited claim-by-claim.</p>
-  <div class="grid">
-    <a class="card" href="mockup-elements.html"><b>Element gallery</b><span>Interactive mockups — dark &amp; light elements, native widgets, app rows, haptic vocabulary.</span></a>
-    <a class="card" href="tokens.md"><b>Tokens</b><span>Brand palette, dark/light, OS 5 deltas, complete 2×2 style×mode matrix, accent decision table.</span></a>
-    <a class="card" href="typography.md"><b>Typography</b><span>Font roles, type scale, Nothing's official NType82/NDot specs, the OFL stand-ins.</span></a>
-    <a class="card" href="components.md"><b>Components</b><span>Buttons, switches, chips, dot-matrix icons, media-player patterns, motion, a11y.</span></a>
-    <a class="card" href="feedback.md"><b>Haptics &amp; sound</b><span>Platform APIs, the semantic haptic vocabulary, alarm-only sound with ducking, Glyph SDK.</span></a>
-    <a class="card" href="third-party-case-studies.md"><b>Case study</b><span>MissingCore/Music — a second shipped implementation, cross-checked value by value.</span></a>
-    <a class="card" href="fact-check.md"><b>Fact-check</b><span>Claim-by-claim audit with verdicts and sources — the credibility layer.</span></a>
-    <a class="card" href="tokens.json"><b>tokens.json / tokens.css</b><span>Machine-readable exports for devs and designers.</span></a>
+<header>
+  <div class="bar">
+    <div class="brand"><b>NOTHING OS DESIGN</b> · MEASURED SPEC · v1.3.0</div>
+    <div class="tgl" role="group" aria-label="Style">
+      <button data-style="classic" aria-pressed="true">CLASSIC</button>
+      <button data-style="os5" aria-pressed="false">OS 5</button>
+    </div>
+    <div class="tgl" role="group" aria-label="Mode">
+      <button data-mode="dark" aria-pressed="true">DARK</button>
+      <button data-mode="light" aria-pressed="false">LIGHT</button>
+    </div>
   </div>
-  <div class="note"><b>Not affiliated with Nothing Technology Ltd.</b> "Nothing OS" and
-  related marks belong to their owner. No Nothing proprietary assets (NDot, NType,
-  Lettera, icon artwork) are included — only open-licensed stand-ins (Geist, Geist
-  Mono, Doto, Space Grotesk, NDot JP) are recommended. Spec is MIT-licensed;
-  community feedback lives in
-  <a style="color:var(--fg)" href="https://github.com/Jero009/nothing-os-design/discussions">GitHub Discussions</a>.</div>
+</header>
+<main>
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-p="elements" aria-selected="true">Elements</button>
+    <button role="tab" data-p="widgets" aria-selected="false">Widgets</button>
+    <button role="tab" data-p="tokens" aria-selected="false">Tokens</button>
+    <button role="tab" data-p="type" aria-selected="false">Type</button>
+    <button role="tab" data-p="feedback" aria-selected="false">Haptics &amp; Sound</button>
+    <button role="tab" data-p="docs" aria-selected="false">Docs</button>
+  </nav>
+
+  <!-- ============ ELEMENTS ============ -->
+  <section class="panel on" id="p-elements">
+    <p class="lead">Every specimen below is live and token-driven — switch <b>CLASSIC / OS 5</b> and
+    <b>DARK / LIGHT</b> above and watch the same components re-point. Active states
+    <b>invert</b>; the red dot is the only color on this page.</p>
+
+    <div class="k">Buttons — inversion primary · ghost · signal-only red</div>
+    <div class="row">
+      <button class="btn btn-p">CONFIRM</button>
+      <button class="btn btn-g">CANCEL</button>
+      <button class="btn btn-d">DELETE</button>
+    </div>
+
+    <div class="k">Switch — inverts, never colorizes (tap them)</div>
+    <div class="row">
+      <button class="sw" aria-pressed="true" aria-label="switch on"></button>
+      <button class="sw" aria-pressed="false" aria-label="switch off"></button>
+      <span class="foot-note">dark: white track + black knob · light: reversed</span>
+    </div>
+
+    <div class="k">Segment — selected = fill inversion</div>
+    <div class="seg" role="group">
+      <button aria-pressed="true">DARK</button><button aria-pressed="false">LIGHT</button><button aria-pressed="false">SYSTEM</button>
+    </div>
+
+    <div class="k">Chip — the one place a red signal dot lives</div>
+    <div class="row"><span class="chip"><span class="dot"></span>SYNCING</span><span class="chip">IDLE</span></div>
+
+    <div class="k">Quick-settings tiles — ON is solid white + black icon (tap them)</div>
+    <div class="qs">
+      <button class="qtile" aria-pressed="true"><span class="ic">✕</span><span><b>Wi-Fi</b><small>connected</small></span></button>
+      <button class="qtile" aria-pressed="false"><span class="ic">○</span><span><b>Torch</b><small>off</small></span></button>
+      <button class="qtile" aria-pressed="false"><span class="ic">◎</span><span><b>Bluetooth</b><small>off</small></span></button>
+    </div>
+
+    <div class="k">Slider — 4px track, white fill, mono value (drag it)</div>
+    <div class="card">
+      <div class="tile" style="background:transparent;padding:0">
+        <span>INTENSITY · <output id="slv" style="font-family:var(--nt-font-mono),monospace">70%</output></span>
+        <input id="sl" type="range" min="0" max="100" value="70" style="width:100%;accent-color:var(--nt-text);height:24px">
+      </div>
+    </div>
+
+    <div class="k">Dot-matrix icon — true 9×9 grid, every dot a complete circle</div>
+    <div class="row">
+      <div class="dots9" id="d9"></div>
+      <span class="foot-note">rendered from a grid array — never mask/clip-path<br>hero glyphs use 25×25 (Glyph Matrix)</span>
+    </div>
+
+    <div class="k">Card — borderless classic · one hairline + frost in OS 5</div>
+    <div class="card"><div class="tile"><span>SLEEP SCORE</span><strong>82</strong></div>
+      <div class="foot-note">Switch to OS 5 above: frosted surface + hairline + dot-grid substrate.</div>
+    </div>
+
+    <div class="k">Input — fill only, no border</div>
+    <div class="input">Search…</div>
+  </section>
+
+  <!-- ============ WIDGETS ============ -->
+  <section class="panel" id="p-widgets">
+    <p class="lead">Native widgets: the visual is the hero, at most one word of text,
+    controls instead of tickers. The clock is live; the ring tracks the slider in Elements.</p>
+    <div class="wgrid">
+      <div>
+        <div class="wcard"><div class="wclock" id="clock">--:--</div><div class="wkick" id="clockd">—</div></div>
+        <div class="wfoot">Doto numerals, weight 500 — dots stay separate and round.</div>
+      </div>
+      <div>
+        <div class="wcard wring">
+          <svg width="56" height="56" viewBox="0 0 56 56">
+            <circle class="track" cx="28" cy="28" r="24" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="5"/>
+            <circle id="ring" cx="28" cy="28" r="24" fill="none" stroke="#FFFFFF" stroke-width="5"
+              stroke-linecap="round" stroke-dasharray="105.6 150.8" transform="rotate(-90 28 28)"/>
+          </svg>
+          <div><b id="ringv">70%</b><div class="wkick">BATTERY</div></div>
+        </div>
+        <div class="wfoot">White ring = data encoding. Never the accent red.</div>
+      </div>
+      <div>
+        <div class="wcard wmus">
+          <div style="display:flex;gap:12px;align-items:center">
+            <div class="art"></div>
+            <div class="meta"><div class="t">Midnight City</div><div class="a">M83</div></div>
+          </div>
+          <div class="ctr"><i>⏮</i><span class="pp">❚❚</span><i>⏭</i></div>
+        </div>
+        <div class="wfoot">Controls and state — never a per-second playhead.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TOKENS ============ -->
+  <section class="panel" id="p-tokens">
+    <p class="lead">Click a swatch to copy its hex. Full tables in
+    <a href="https://github.com/Jero009/nothing-os-design/blob/main/docs/tokens.md">tokens.md</a> ·
+    exports: <a href="tokens.json">tokens.json</a> · <a href="tokens.css">tokens.css</a>.</p>
+    <div class="k">Brand palette [official]</div>
+    <div class="swatches" id="brand"></div>
+    <div class="k">Dark surfaces [impl] — measured system values in the same family</div>
+    <div class="swatches" id="dark"></div>
+    <div class="k">Light surfaces [impl]</div>
+    <div class="swatches" id="light"></div>
+    <div class="k">Radii scale — classic 8/16/24 · OS 5 12/20/28</div>
+    <div class="rad">
+      <div><div class="rb" style="border-radius:8px"></div><small>sm 8</small></div>
+      <div><div class="rb" style="border-radius:16px"></div><small>md 16</small></div>
+      <div><div class="rb" style="border-radius:24px"></div><small>lg 24</small></div>
+      <div><div class="rb" style="border-radius:12px"></div><small>OS sm 12</small></div>
+      <div><div class="rb" style="border-radius:20px"></div><small>OS md 20</small></div>
+      <div><div class="rb" style="border-radius:28px"></div><small>OS lg 28</small></div>
+    </div>
+    <div class="k">Motion — 140 / 280 / 400 ms, decel entrance, no bounce (reduced-motion respected)</div>
+    <div class="row">
+      <button class="btn btn-g" data-ms="140">PLAY 140MS</button>
+      <button class="btn btn-g" data-ms="280">PLAY 280MS</button>
+      <button class="btn btn-g" data-ms="400">PLAY 400MS</button>
+      <div id="mdot" style="width:12px;height:12px;border-radius:50%;background:var(--nt-text)"></div>
+      <span class="foot-note" id="mtxt">press a button — one dot, transform+opacity only</span>
+    </div>
+    <div class="k">Accent decision table — the part everyone gets wrong</div>
+    <div class="card" style="overflow:auto">
+      <table class="dec">
+        <tr><th>Element</th><th>Signal red</th><th>Active treatment</th></tr>
+        <tr><td>Switch / toggle ON</td><td class="no">never</td><td>invert (white track) → OS 5: accent fill</td></tr>
+        <tr><td>Slider / progress fill</td><td class="no">never</td><td>invert / white → accent fill</td></tr>
+        <tr><td>Selected tab / chip / segment</td><td class="no">never</td><td>invert → accent</td></tr>
+        <tr><td>Destructive confirm</td><td class="yes">YES</td><td>always red</td></tr>
+        <tr><td>Live / recording / sync pulse</td><td class="yes">YES</td><td>red dot</td></tr>
+        <tr><td>Error / warning threshold</td><td class="yes">YES</td><td>red</td></tr>
+        <tr><td>Navigation chrome, body text, cards</td><td class="no">never</td><td>never</td></tr>
+      </table>
+      <div class="foot-note">Budget: 0–2 accent elements per screen. Alpha via
+      color-mix, never a new hex. Danger stays red even when the expression accent is another hue.</div>
+    </div>
+  </section>
+
+  <!-- ============ TYPE ============ -->
+  <section class="panel" id="p-type">
+    <p class="lead">OS 5: Geist body/head + Geist Mono numerics + Doto as hero display only.
+    Classic: Space Grotesk + Doto + Space Mono. Numerals never render in the body face.</p>
+    <div class="spec"><div class="lbl">KICKER · 0.16em tracking · uppercase</div>
+      <div class="kicker">Nothing OS design · measured spec</div></div>
+    <div class="spec"><div class="lbl">LABEL · 0.10em · uppercase · dim</div>
+      <div class="label">SLEEP SCORE</div></div>
+    <div class="spec"><div class="lbl">BODY · dim ink · 1.5 line</div>
+      <div class="body-t">Hierarchy comes from size jumps, uppercase kickers with wide
+      tracking, and weight — not from color or icons.</div></div>
+    <div class="spec"><div class="lbl">METRIC TILE VALUE · mono · tabular</div>
+      <div class="metric">1,847 kcal · 12,540 steps</div></div>
+    <div class="spec"><div class="lbl">HERO DISPLAY · Doto · weight ≈500 · hero only</div>
+      <div class="hero-doto">82%</div>
+      <div class="foot-note">Doto weight rule: ≈400–500 keeps dots separate and round;
+      heavy weights smear them together. In OS 5, Doto is never a metric tile — hero display only.</div></div>
+  </section>
+
+  <!-- ============ FEEDBACK ============ -->
+  <section class="panel" id="p-feedback">
+    <p class="lead">Interaction feedback is <b>haptic, never audible</b> — the click you
+    "hear" on a Nothing phone is the motor. Sound is alarm-only, and it ducks the
+    user's music instead of stopping it. Vocabulary
+    [impl — Essential Island <code style="font-family:var(--nt-font-mono),monospace">util/HapticStyle.kt</code>]:</p>
+    <div class="card" id="haptics"></div>
+    <div class="foot-note">Strength is a user setting that scales amplitude (off / light ×0.55 /
+    normal ×1.0 / strong ×1.5) — it never changes the effect choice. Scrub ticks fire only
+    when a selection CHANGES. Platform: predefined effects are Android 10+ with device tuning
+    and automatic fallback; primitive compositions are Android 11+ with none — check support first.</div>
+    <div class="k">Sound roles</div>
+    <div class="role">
+      <div class="rcard"><b>ALERT · TIMER / REST DONE</b>
+        <p>Duck, don't stop: transient-can-duck focus lowers the user's music, one short
+        cue on the alarm channel, restore volume. [impl — dashbord <i>duckAndDing</i>]</p></div>
+      <div class="rcard"><b>UI TAPS / TRANSITIONS</b>
+        <p>Nothing. The system UI plays no tap sounds — the haptic carries interaction
+        feedback entirely. Decorative UI sounds are never Nothing.</p></div>
+    </div>
+    <div class="k">Nothing hardware — sound becomes light</div>
+    <div class="rcard"><b>GLYPH DEVELOPER KIT</b>
+      <p>The sanctioned path for the "event becomes light" identity: requires an API key
+      from Nothing (unkeyed debug mode auto-expires after 48 h). Glyph Composer is the
+      stock app users already know for sound+light ringtones. Don't fake glyph behavior
+      with screen flashes or sampled sounds.</p></div>
+  </section>
+
+  <!-- ============ DOCS ============ -->
+  <section class="panel" id="p-docs">
+    <p class="lead">The deep text lives in the repo — this page is the specimen, the docs are
+    the source of truth. Every claim is audited in fact-check.md.</p>
+    <div class="docs">
+      <a class="card2" href="https://github.com/Jero009/nothing-os-design/blob/main/docs/tokens.md"><b>Tokens</b><span>Brand palette, dark/light, OS 5 deltas, 2×2 style×mode matrix, accent decision table.</span></a>
+      <a class="card2" href="https://github.com/Jero009/nothing-os-design/blob/main/docs/typography.md"><b>Typography</b><span>Font roles, type scale, Nothing's official NType82/NDot specs, OFL stand-ins.</span></a>
+      <a class="card2" href="https://github.com/Jero009/nothing-os-design/blob/main/docs/components.md"><b>Components</b><span>Buttons, switches, chips, dot-matrix icons, media-player patterns, motion, a11y.</span></a>
+      <a class="card2" href="https://github.com/Jero009/nothing-os-design/blob/main/docs/feedback.md"><b>Haptics &amp; sound</b><span>Platform APIs, vocabulary, alarm-only sound, Glyph Developer Kit.</span></a>
+      <a class="card2" href="https://github.com/Jero009/nothing-os-design/blob/main/docs/third-party-case-studies.md"><b>Case study</b><span>MissingCore/Music cross-checked value by value.</span></a>
+      <a class="card2" href="https://github.com/Jero009/nothing-os-design/blob/main/docs/fact-check.md"><b>Fact-check</b><span>Claim-by-claim audit with verdicts and sources.</span></a>
+      <a class="card2" href="tokens.json"><b>tokens.json</b><span>Machine-readable token tree, official/impl labeled.</span></a>
+      <a class="card2" href="tokens.css"><b>tokens.css</b><span>Drop-in custom properties — the exact vars this page uses.</span></a>
+    </div>
+    <div class="note"><b>Not affiliated with Nothing Technology Ltd.</b> "Nothing OS" and related
+    marks belong to their owner. No Nothing proprietary assets (NDot, NType, Lettera, icon
+    artwork) are included — only open-licensed stand-ins are recommended. Spec is MIT ·
+    feedback via <a style="color:var(--nt-text)" href="https://github.com/Jero009/nothing-os-design/discussions">GitHub Discussions</a> ·
+    cite a release: <a style="color:var(--nt-text)" href="https://github.com/Jero009/nothing-os-design/releases">v1.3.0</a></div>
+  </section>
+</main>
+<script>
+(function(){
+  'use strict';
+  var html = document.documentElement;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- theme toggles: MODE + STYLE, persisted (guarded: localStorage
+         throws on opaque origins like file://) ---- */
+  function store(k, v){ try { localStorage.setItem(k, v); } catch (e) {} }
+  function read(k, d){ try { return localStorage.getItem(k) || d; } catch (e) { return d; } }
+  function setPressed(group, val){
+    document.querySelectorAll('.tgl button[data-' + group + ']').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.dataset[group] === val));
+    });
+  }
+  function applyTheme(){
+    var mode  = read('nod-mode', 'dark');
+    var style = read('nod-style', 'classic');
+    html.classList.toggle('theme-light', mode === 'light');
+    html.classList.toggle('theme-os5', style === 'os5');
+    setPressed('mode', mode); setPressed('style', style);
+  }
+  document.querySelectorAll('.tgl button[data-mode]').forEach(function(b){
+    b.addEventListener('click', function(){ store('nod-mode', b.dataset.mode); applyTheme(); });
+  });
+  document.querySelectorAll('.tgl button[data-style]').forEach(function(b){
+    b.addEventListener('click', function(){ store('nod-style', b.dataset.style); applyTheme(); });
+  });
+  applyTheme();
+
+  /* ---- tabs ---- */
+  document.querySelectorAll('nav.tabs button').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('nav.tabs button').forEach(function(x){ x.setAttribute('aria-selected','false'); });
+      b.setAttribute('aria-selected','true');
+      document.querySelectorAll('section.panel').forEach(function(p){ p.classList.remove('on'); });
+      document.getElementById('p-' + b.dataset.p).classList.add('on');
+      if (b.dataset.p === 'feedback') drawHapticBars();
+    });
+  });
+
+  /* ---- switches / segments / QS tiles ---- */
+  document.querySelectorAll('.sw').forEach(function(s){
+    s.addEventListener('click', function(){
+      s.setAttribute('aria-pressed', String(s.getAttribute('aria-pressed') !== 'true'));
+    });
+  });
+  document.querySelectorAll('.seg').forEach(function(g){
+    g.querySelectorAll('button').forEach(function(b){
+      b.addEventListener('click', function(){
+        g.querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed','false'); });
+        b.setAttribute('aria-pressed','true');
+      });
+    });
+  });
+  document.querySelectorAll('.qtile').forEach(function(t){
+    t.addEventListener('click', function(){
+      t.setAttribute('aria-pressed', String(t.getAttribute('aria-pressed') !== 'true'));
+      t.querySelector('small').textContent = t.getAttribute('aria-pressed') === 'true' ? 'on' : 'off';
+    });
+  });
+
+  /* ---- slider drives the value label + battery ring ---- */
+  var sl = document.getElementById('sl'), slv = document.getElementById('slv'),
+      ring = document.getElementById('ring'), ringv = document.getElementById('ringv'),
+      C = 2 * Math.PI * 24;
+  function syncSlider(){
+    var v = +sl.value;
+    slv.textContent = v + '%';
+    ringv.textContent = v + '%';
+    ring.setAttribute('stroke-dasharray', (C * v / 100).toFixed(1) + ' ' + C.toFixed(1));
+  }
+  sl.addEventListener('input', syncSlider);
+  syncSlider();
+
+  /* ---- live clock in Doto ---- */
+  var DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  function tick(){
+    var d = new Date();
+    document.getElementById('clock').textContent =
+      String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+    document.getElementById('clockd').textContent =
+      DAYS[d.getDay()] + ' · ' + String(d.getDate()).padStart(2,'0');
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* ---- 9x9 dot-matrix glyph (bell) ---- */
+  var P = ['.........',
+           '....X....',
+           '...XXX...',
+           '..XXXXX..',
+           '..XXXXX..',
+           '..XXXXX..',
+           '.XXXXXXX.',
+           '....X....',
+           '........'];
+  var g = document.getElementById('d9');
+  P.join('').split('').forEach(function(c){
+    var b = document.createElement('b');
+    if (c === 'X') b.className = 'lit';
+    g.appendChild(b);
+  });
+
+  /* ---- copyable swatches ---- */
+  function swatch(host, name, hex){
+    var el = document.createElement('div');
+    el.className = 'swc';
+    el.innerHTML = '<div class="ch" style="background:' + hex + '"><em>COPIED</em></div>' +
+                   '<div class="nm"><b>' + name + '</b><code>' + hex + '</code></div>';
+    el.addEventListener('click', function(){
+      if (navigator.clipboard) navigator.clipboard.writeText(hex);
+      el.classList.add('copied');
+      setTimeout(function(){ el.classList.remove('copied'); }, 900);
+    });
+    host.appendChild(el);
+  }
+  [['PURE BLACK','#000000'],['PURE WHITE','#FFFFFF'],['WINDOW GREY','#B1B3B3'],
+   ['N-GREY','#DCD7D2'],['N-RED (PRINT)','#C8102E'],['N-RED (SCREEN)','#D71921'],
+   ['N-BLUE','#002F6C'],['N-YELLOW','#FFC700']
+  ].forEach(function(p){ swatch(document.getElementById('brand'), p[0], p[1]); });
+  [['BG','#000000'],['SURFACE','#1A1A1A'],['ELEVATED','#242424'],
+   ['SEGMENT PILL','#303030'],['DIM TEXT','#ADADAD'],['MEASURED SYSTEM','#1B1B1B']
+  ].forEach(function(p){ swatch(document.getElementById('dark'), p[0], p[1]); });
+  [['BG (LIGHT)','#F1F1F1'],['CARD','#FCFCFC'],['QS SHADE','#E2E2E2'],
+   ['OFF-TILE','#D1D1D1'],['SURFACE','#F2F2F2'],['TEXT','#0A0A0A']
+  ].forEach(function(p){ swatch(document.getElementById('light'), p[0], p[1]); });
+
+  /* ---- motion demo: one dot, transform+opacity only ---- */
+  var mdot = document.getElementById('mdot'), mtxt = document.getElementById('mtxt');
+  document.querySelectorAll('[data-ms]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var ms = +b.dataset.ms;
+      mdot.style.transition = 'none';
+      mdot.style.transform = 'translateY(6px)';
+      mdot.style.opacity = '0';
+      requestAnimationFrame(function(){
+        mdot.style.transition = 'transform ' + ms + 'ms cubic-bezier(0.2,0,0,1), opacity ' + ms + 'ms linear';
+        mdot.style.transform = 'translateY(0)';
+        mdot.style.opacity = '1';
+      });
+      mtxt.textContent = ms + 'ms · cubic-bezier(0.2, 0, 0, 1)' + (reduced ? ' · reduced-motion: skipped' : '');
+    });
+  });
+
+  /* ---- haptic vocabulary (bar length ∝ duration) ---- */
+  var H = [
+    ['EXPAND',  'CLICK',       22, 150],
+    ['COLLAPSE','TICK',        14, 110],
+    ['SWIPE',   'TICK',        12, 130],
+    ['HOLD',    'HEAVY_CLICK', 60, 200],
+    ['MERGE',   'TICK',        10,  90],
+    ['LOCK',    'CLICK',       28, 100]
+  ];
+  var host = document.getElementById('haptics');
+  H.forEach(function(h){
+    var r = document.createElement('div');
+    r.className = 'hrow';
+    r.innerHTML = '<span class="g">' + h[0] + '</span><span class="e">' + h[1] + '</span>' +
+      '<span class="bar"><i style="width:0"></i></span>' +
+      '<span class="ms">' + h[2] + 'ms · ' + h[3] + '</span>';
+    host.appendChild(r);
+  });
+  function drawHapticBars(){
+    host.querySelectorAll('.hrow .bar i').forEach(function(i, idx){
+      if (reduced) i.style.transition = 'none';
+      i.style.width = (H[idx][2] / 60 * 100) + '%';
+    });
+  }
+  drawHapticBars();
+})();
+</script>
 </body>
 </html>
