@@ -13,7 +13,7 @@ Claim-by-claim audit: `fact-check.md`. Verified 2026-11.
 | Foundation | Window Grey | #B1B3B3 | secondary text, dividers |
 | Foundation | N-Grey | #DCD7D2 | |
 | Foundation | — | #F4F4F4 | light section backgrounds |
-| Primary | N-Red | #C8102E print / **#D71920** on-screen (refs also cite #D71921) | THE signal accent |
+| Primary | N-Red | #C8102E print / **#D71921** on-screen (device-measured EXACT; nothing.wiki cites #D71920 — one bit, same family) | THE signal accent |
 | Primary | N-Blue | #002F6C | data encoding only |
 | Primary | N-Yellow | #FFC700 | data encoding only |
 
@@ -60,7 +60,7 @@ Cross-impl patterns worth adopting:
 | `--nt-border` | rgba(ink, 0.08); strong: 0.12 |
 | `--nt-text` | #FFFFFF; dim: rgba(ink, 0.5); glow: rgba(ink, 0.18) |
 | `--nt-ink` | 255,255,255 (raw RGB triplet → any alpha) |
-| `--nt-accent` | #D71A21 (impl; canonical official: #D71920) — press: #B21319; on-accent text: #FFFFFF |
+| `--nt-accent` | #D71A21 (impl; canonical: #D71921, see brand palette) — press: #B21319 (accent darkens ~10–15% when pressed, never lightens); on-accent text: #FFFFFF |
 | `--nt-data-positive` | rgb(34,197,94); light mode: rgb(21,128,61) |
 | `--nt-data-goal` | #FFD700; light mode: #B8860B |
 | Fonts | body/head: Space Grotesk; display numerics: Doto; mono: Space Mono |

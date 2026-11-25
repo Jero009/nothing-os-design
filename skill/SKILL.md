@@ -74,11 +74,12 @@ monochrome character stays underneath" [official].
 
 Two different jobs share the word "accent". Separate them:
 
-1. **Signal accent — color as alarm.** One hue (Nothing red, `#D71920`
-   [official]), tiny area, high intent: live/recording, needs-decision,
-   over-limit, destructive, error. Budget: **0–2 accent elements per screen**
-   — if two things glow, nothing is signaled. Never on primary buttons, tabs,
-   links, sliders, or hover by default.
+1. **Signal accent — color as alarm.** One hue (Nothing red, `#D71921`
+   [official; device-measured EXACT — one-bit variants `#D71920`/`#D71A21`
+   documented as the same family]), tiny area, high intent: live/recording,
+   needs-decision, over-limit, destructive, error. Budget: **0–2 accent
+   elements per screen** — if two things glow, nothing is signaled. Never on
+   primary buttons, tabs, links, sliders, or hover by default.
 2. **Active-state treatment — color as response.** Classic Nothing does NOT
    colorize active controls: **active states invert black↔white** — switch ON
    = white track/black knob (dark mode), selected chip/tab/primary button =
@@ -129,9 +130,12 @@ N-Grey `#DCD7D2`, `#F4F4F4` (light section backgrounds). In-app dark theme:
 bg `#000000` (true OLED black), surfaces `#1A1A1A` / `#242424`, ink hierarchy
 via white alphas (100% / 50% / ~18% glow) [impl].
 
-**Signal accent [official]:** Nothing red `#D71920` (nothing.wiki "Nothing OS
-Widget Red"; some references cite `#D71921` — one bit apart; the print/brand
-primary is `#C8102E`, print-only). Nothing also defines N-Blue `#002F6C` and
+**Signal accent [official]:** Nothing red `#D71921` (device-measured EXACT;
+nothing.wiki cites `#D71920` — one bit apart, same family; dashbord's impl
+token `#D71A21` is also one bit off; the print/brand
+primary is `#C8102E`, print-only — though a third-party app may adopt it as
+its own semantic *error* hue, keeping `#D71921` as signal). Nothing also
+defines N-Blue `#002F6C` and
 N-Yellow `#FFC700` — in apps these survive only as *data* encodings, never
 chrome.
 

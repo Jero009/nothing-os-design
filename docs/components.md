@@ -40,7 +40,10 @@ VALUES, never literals in components.
   The accent red is signal-only (see SKILL.md framework).
 - Alert button stack: full-width, stacked, min-height 46, column-reverse
   (confirm on top), gap 8.
-- Press feedback: scale 0.97 + opacity 0.85, 140ms — no color flash.
+- Press feedback: scale 0.97 + opacity 0.85, 140ms — no color flash on
+  neutral/chrome elements. Accent-filled elements additionally darken their
+  accent ~10–15% when pressed (cross-impl rule: dashbord press `#B21319`,
+  MissingCore `#AE141B`) — darker, never lighter.
 
 ## Selection controls
 

@@ -2,7 +2,8 @@
 
 Verdicts: ✅ verified · ⚠️ deviation/nuance · 📌 unspecified by Nothing
 ([impl] by definition). Audit covers the dashbord app's DESIGN.md +
-variables.css claims and this skill's own claims.
+variables.css claims, this skill's own claims, and (2026-11-25) a
+second-implementation cross-check against MissingCore/Music.
 
 ## Verified correct
 
@@ -26,7 +27,7 @@ variables.css claims and this skill's own claims.
 
 | Claim | Verdict | Resolution |
 |---|---|---|
-| dashbord accent `#D71A21` (215,26,33) | ⚠️ | Official on-screen/widget red is `#D71920` (nothing.wiki); some refs cite `#D71921` (rainbrand). One bit off in two channels — imperceptible, intentional app token. Base truth records `#D71920/#D71921` as canonical. `#C8102E` is the PRINT brand red, never on-screen. |
+| dashbord accent `#D71A21` (215,26,33) | ⚠️ | nothing.wiki's on-screen/widget red is `#D71920`; some refs cite `#D71921`. One bit off in two channels — imperceptible, intentional app token. Canonical red settled 2026-11-14 by device measurement: **`#D71921`** (see "RED SETTLED" below). `#C8102E` is the PRINT brand red — never on-screen in Nothing system UI; a third-party app may adopt it as its own semantic error hue (2026-11-25 cross-check). |
 | dashbord colors selection with red (tabs, checkboxes, segment pills) | ⚠️ | Classic Nothing inverts active states monochrome (white track switch, white-fill selected chip); red reserved for signals (0–2 per screen). dashbord's choice = OS 5 expression-accent style with accent defaulting to red. Legitimate, but pick ONE treatment app-wide and know which convention you're in. |
 | dashbord ships Doto Rounded-Black (heavy weight) | ⚠️ | Community weight rule: dot-matrix display ≈400–500 — heavy weights smear adjacent dots and pinch curve tops. Black Rounded is a deliberate chunkier look; if dot separation reads badly at a size, drop weight, don't scale up. |
 | "Nothing OS Widget Red #D71920" vs #D71921 in the wild | ⚠️ | Two authoritative-adjacent sources disagree by one bit. Document both; treat as identical. |
