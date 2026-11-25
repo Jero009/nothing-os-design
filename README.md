@@ -16,7 +16,9 @@ implementation (labeled **[impl]**). Every claim is audited in
 
 ![Nothing OS element mockups — dark and light, built from the measured tokens](docs/mockup-elements.png)
 
-*Element mockups built from the measured tokens — interactive version:
+*Element gallery — dark & light elements, native widgets (clock, battery
+ring, media controls) over a wallpaper, app rows/sliders/notifications, and
+the haptic vocabulary. Interactive version:
 [`docs/mockup-elements.html`](docs/mockup-elements.html)*
 
 ## Highlights — the parts everyone gets wrong
@@ -39,6 +41,28 @@ implementation (labeled **[impl]**). Every claim is audited in
 5. **Geometry is mode- and style-invariant.** Measured identical radii/rows
    across dark/light × Classic/Translucent (settings cards 25px @720 ≈ 13dp,
    rows 88px, QS tile gaps ~40px). Mode = color swap only.
+6. **Interaction feedback is haptic, never audible.** The click you "hear" on
+   a Nothing phone is the vibration motor. A Nothing-styled app carries a
+   small fixed haptic vocabulary and reserves sound for alarms — ducked, so
+   the user's music never stops. See
+   [`docs/feedback.md`](docs/feedback.md).
+
+## Examples — widgets & app elements
+
+Concrete recipes (full tables in
+[`docs/tokens.md`](docs/tokens.md) and
+[`docs/components.md`](docs/components.md); rendered in the gallery above):
+
+| Element | Recipe |
+|---|---|
+| Clock widget | Doto (or NDot JP) numerals ~34px, weight ≈500, one date word in 10px uppercase +0.16em dim; panel opaque `#1B1B1B`, 24dp radius, `#1FFFFFFF` hairline (native) |
+| Battery ring | ring stroke 5dp — track white 14%, fill white with round caps, % in Geist Mono 22px beside it; white ring = data encoding, never accent red |
+| Media widget | artwork 56dp radius 12, title 13/600, artist 11 dim, controls: prev/next 15dp glyphs, play/pause = white 34dp circle with black glyph; **no playhead ticker** (a per-second widget update is pure battery loss) |
+| Settings rows | 44dp min-height, label 14/400, value 13 dim, borderless card radius 13, separation by whitespace; switches invert (white track/black knob) |
+| Slider | 4px track, white fill to the value, 16px white thumb; value in Geist Mono, label uppercase +0.1em dim |
+| Notification card | kicker (app · time) 10px uppercase dim, title 14/600, body 13 dim, actions as ghost pills (hairline + 11/600 uppercase) |
+| Search bar | stadium, fill = elevated surface, no border, placeholder dim |
+| Haptic vocabulary | expand CLICK 22ms/150 · collapse TICK 14ms/110 · swipe TICK 12ms/130 · hold HEAVY_CLICK 60ms/200 · merge TICK 10ms/90 · lock CLICK 28ms/100; strength scales amplitude only |
 
 ## Contents
 
@@ -47,6 +71,7 @@ implementation (labeled **[impl]**). Every claim is audited in
 | [`docs/tokens.md`](docs/tokens.md) | Full token tables: brand palette, classic dark/light, OS 5 deltas, complete 2×2 style×mode matrix, accent decision table — all measured values |
 | [`docs/typography.md`](docs/typography.md) | Font roles & stacks, per-element type scale (size/weight/tracking), Nothing's official leading/tracking specs |
 | [`docs/components.md`](docs/components.md) | Buttons, switches, chips, lists, alerts, dot-matrix icon construction (9×9 / 25×25), media-player patterns, motion, accessibility |
+| [`docs/feedback.md`](docs/feedback.md) | Haptics & sound: platform APIs, the semantic haptic vocabulary, alarm-only sound with audio ducking, Glyph Developer Kit notes |
 | [`docs/third-party-case-studies.md`](docs/third-party-case-studies.md) | Source-checked study of a second shipped implementation ([MissingCore/Music](https://github.com/MissingCore/Music)) — palette cross-checks, accent ramps, media-player patterns |
 | [`docs/fact-check.md`](docs/fact-check.md) | Claim-by-claim audit with verdicts and sources — the credibility layer |
 | [`docs/screenshots/`](docs/screenshots/) | Sanitized reference screenshots covering all four style×mode combinations |
@@ -58,9 +83,12 @@ Measurements were taken from on-device screenshots (720×1600) by sampling
 pixel colors at known element positions, fitting corner radii by scanning
 edge insets and least-squares fitting a circle, and cross-checking dominant
 colors per region. Device-under-test ran Nothing OS 5.0 (Android 17). Values
-labeled [impl] come from a production app implementation
-([dashbord](https://github.com/Jero009/dashbord), `src/theme/variables.css`)
-that has shipped through multiple releases.
+labeled [impl] come from two production app implementations that have
+shipped through multiple releases: the
+[dashbord](https://github.com/Jero009/dashbord) app
+(`src/theme/variables.css`) and the
+[Essential Island](https://github.com/Jero009/essential-island) overlay app
+(haptic vocabulary, `util/HapticStyle.kt`).
 
 Primary sources: Nothing OS 5.0 announcement (nothing.community, 2026-08-25),
 nothing.tech OS 5 page, nothing.wiki brand reference, Vercel Geist / Google

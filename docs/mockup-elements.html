@@ -47,6 +47,42 @@
   .dots9{display:grid; grid-template-columns:repeat(9,10px); gap:3px}
   .dots9 b{width:10px;height:10px;border-radius:50%}
   .muted{color:var(--dim); font-size:12px; margin-top:6px}
+  /* widgets panel — sits "over a wallpaper" to show the opaque-panel rule */
+  .panelW{width:400px; padding:28px 26px 40px; min-height:1000px; background:linear-gradient(160deg,#1d2433 0%,#3a2c4f 45%,#6b3550 100%); color:#fff}
+  .panelW .k{color:rgba(255,255,255,.6)}
+  .wgrid{display:grid; grid-template-columns:1fr 1fr; gap:22px}
+  .wcard{background:#1B1B1B; border-radius:24px; padding:18px; border:1px solid rgba(255,255,255,.12)}
+  .wclock{font-family:"Doto",monospace; font-weight:500; font-size:34px; line-height:1; letter-spacing:.04em}
+  .wkick{font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.55); margin-top:8px}
+  .wring{display:flex; align-items:center; gap:12px}
+  .wring svg{transform:rotate(-90deg)}
+  .wring b{font-family:"Geist Mono",monospace; font-weight:500; font-size:22px}
+  .wmus .art{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#b06,#fa0)}
+  .wmus .meta{flex:1; min-width:0}
+  .wmus .t{font-weight:600; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .wmus .a{color:rgba(255,255,255,.55); font-size:11px}
+  .wmus .ctr{display:flex; gap:14px; justify-content:center; margin-top:12px}
+  .wmus .ctr i{font-style:normal; font-size:15px; color:rgba(255,255,255,.9)}
+  .wmus .ctr .pp{background:#fff; color:#000; border-radius:50%; width:34px; height:34px; display:inline-flex; align-items:center; justify-content:center}
+  .wfoot{font-size:11px; color:rgba(255,255,255,.55); margin-top:14px; line-height:1.5}
+  /* app-elements panel */
+  .lcard{background:var(--card); border-radius:13px; padding:4px 16px}
+  .lrow{display:flex; align-items:center; justify-content:space-between; min-height:44px; gap:12px}
+  .lrow + .lrow{border-top:1px solid rgba(0,0,0,.04)}
+  .lrow .lb{font-size:14px}
+  .lrow .vv{color:var(--dim); font-size:13px}
+  .sl{position:relative; height:4px; border-radius:999px; background:var(--s2); margin:14px 0 6px}
+  .sl::before{content:''; position:absolute; left:0; top:0; bottom:0; width:70%; border-radius:999px; background:var(--pbg)}
+  .sl::after{content:''; position:absolute; left:calc(70% - 8px); top:50%; transform:translateY(-50%); width:16px; height:16px; border-radius:50%; background:var(--pbg); border:2px solid var(--bg)}
+  .ncard{background:var(--card); border-radius:13px; padding:14px 16px}
+  .ncard .kk{font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim)}
+  .ncard .tt{font-weight:600; font-size:14px; margin:4px 0 2px}
+  .ncard .bb{color:var(--dim); font-size:13px}
+  .nact{display:flex; gap:8px; margin-top:12px}
+  .nact span{border:1px solid var(--line); border-radius:999px; padding:6px 14px; font-size:11px; font-weight:600; letter-spacing:.08em}
+  .search{height:42px; border-radius:999px; background:var(--s2); display:flex; align-items:center; padding:0 16px; color:var(--dim); font-size:13px}
+  .hv{font-family:"Geist Mono",monospace; font-size:11px; color:var(--dim); line-height:1.9}
+  .hv b{color:var(--fg); font-weight:500}
 </style>
 </head>
 <body>
@@ -85,6 +121,58 @@
   <div class="input">Search…</div>
   <div class="k">Quick-settings tile</div>
   <div class="qs"><div class="qtile"><span class="ic">✕</span><div><b>Wi-Fi</b><br><small>connected</small></div></div><div class="qtile" style="background:var(--s2)"><span class="ic" style="background:var(--s2);color:var(--dim)">○</span><div><b>Torch</b><br><small>off</small></div></div></div>
+  <div class="k">Hero numeral</div>
+  <div class="hero">82%</div>
+</section>
+<section class="panelW">
+  <h1>Widgets</h1><div class="sub">Native · over a wallpaper</div>
+  <div class="k">Clock widget — Doto numerals, one date word</div>
+  <div class="wcard"><div class="wclock">16:05</div><div class="wkick">Wed · Day 25</div></div>
+  <div class="wgrid" style="margin-top:22px">
+    <div class="wcard wring">
+      <svg width="52" height="52" viewBox="0 0 52 52">
+        <circle cx="26" cy="26" r="22" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="5"/>
+        <circle cx="26" cy="26" r="22" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="116 138" stroke-linecap="round"/>
+      </svg>
+      <div><b>84%</b><div class="wkick">BATTERY</div></div>
+    </div>
+    <div class="wcard"><div class="wclock" style="font-size:22px">1 4 2</div><div class="wkick">REST SECONDS</div></div>
+  </div>
+  <div class="k" style="margin-top:22px">Music widget — controls only, no playhead ticker</div>
+  <div class="wcard wmus">
+    <div style="display:flex; gap:12px; align-items:center">
+      <div class="art"></div>
+      <div class="meta"><div class="t">Midnight City</div><div class="a">M83</div></div>
+    </div>
+    <div class="ctr"><i>⏮</i><span class="pp">❚❚</span><i>⏭</i></div>
+  </div>
+  <div class="wfoot">Classic panels are <b>opaque #1B1B1B</b> at every style×mode; the OS 5 translucent material exists only over wallpaper. No progress tickers — controls and state, never a moving playhead.</div>
+</section>
+<section class="panel">
+  <h1>App elements</h1><div class="sub">Rows · inputs · feedback</div>
+  <div class="k">Settings rows — 44dp, whitespace not separators</div>
+  <div class="lcard">
+    <div class="lrow"><span class="lb">Theme</span><span class="vv">Dark</span></div>
+    <div class="lrow"><span class="lb">Dynamic island</span><span class="sw on"></span></div>
+    <div class="lrow"><span class="lb">Glyph light</span><span class="sw off"></span></div>
+  </div>
+  <div class="k">Slider — white fill, mono value</div>
+  <div class="tile"><span>BRIGHTNESS</span><div class="sl"></div><div class="muted" style="font-family:'Geist Mono',monospace">70%</div></div>
+  <div class="k">Notification card — kicker, title, pill actions</div>
+  <div class="ncard">
+    <div class="kk">MESSAGES · NOW</div>
+    <div class="tt">Sam</div>
+    <div class="bb">Are we still on for tonight?</div>
+    <div class="nact"><span>REPLY</span><span>MARK READ</span></div>
+  </div>
+  <div class="k">Search — stadium, fill only</div>
+  <div class="search">Search settings…</div>
+  <div class="k">Feedback — haptic vocabulary (no tap sounds)</div>
+  <div class="hv">
+    expand <b>CLICK 22ms</b> · collapse <b>TICK 14ms</b> · swipe <b>TICK 12ms</b><br>
+    hold <b>HEAVY 60ms</b> · merge <b>TICK 10ms</b> · lock <b>CLICK 28ms</b><br>
+    sound = alarms only, ducks your music
+  </div>
   <div class="k">Hero numeral</div>
   <div class="hero">82%</div>
 </section>

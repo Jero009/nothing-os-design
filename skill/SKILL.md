@@ -1,6 +1,6 @@
 ---
 name: nothing-os-design
-version: 1.2.0
+version: 1.3.0
 author: Hermes Agent
 license: MIT
 description: "Use when styling Nothing OS-style apps: tokens, accents."
@@ -39,7 +39,9 @@ philosophy, and the OS 5 direction. Full claim-by-claim audit with sources:
   a proportional variant of Space Mono, Colophon Foundry 2016, OFL).
 - **Tier 3 — reference implementations:** the dashbord app
   (`~/projects/dashbord/docs/DESIGN.md`, `src/theme/variables.css`) carries
-  battle-tested [impl] values; community spec `github.com/wangbh030722/
+  battle-tested [impl] values; the Essential Island overlay app
+  (`~/projects/island`, `util/HapticStyle.kt`) carries the haptic vocabulary;
+  community spec `github.com/wangbh030722/
 vibe-nothing-ui-design` (SPEC/DESIGN) for dot-icon and accent-scarcity rules;
   and [MissingCore/Music](https://github.com/MissingCore/Music) (AGPL-3.0
   Nothing-inspired music player, Google Play + GitHub) as a second,
@@ -178,6 +180,22 @@ Buttons invert (primary = white fill/black text; destructive = solid red;
 cancel = ghost hairline), cards are borderless in classic / one hairline in
 OS 5, dot icons are true 9×9 grids of complete circles (never mask-clipped),
 line icons are 24dp outlined 1.5-stroke monochrome.
+
+## Haptics & sound (summary — full spec in `references/feedback.md`)
+
+- **Interaction feedback is haptic, never audible; sound is alarm-only.**
+  Nothing's system UI plays no tap sounds — apps follow.
+- Fixed haptic vocabulary mapped to platform predefined effects: expand =
+  CLICK (22ms), collapse = TICK (14ms), swipe = TICK (12ms), hold =
+  HEAVY_CLICK (60ms), merge = TICK (10ms), lock = CLICK (28ms, dull).
+  Strength scales amplitude only (off/light/normal/strong); scrub ticks fire
+  on selection CHANGE only. Platform facts: predefined effects are Android
+  10+ with device tuning + automatic fallback; primitive compositions are
+  Android 11+ with NO automatic fallback (check support first).
+- Sound: alarms/timers only, ducked (`AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK`)
+  so the user's music lowers instead of stopping. No UI tap sounds. The
+  Nothing sound+light identity (Glyph) ships through the Glyph Developer Kit
+  (API key from Nothing) — don't fake it.
 
 ## Implementation pointers
 

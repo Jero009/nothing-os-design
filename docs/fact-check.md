@@ -133,3 +133,29 @@ Sources (added): github.com/MissingCore/Music — `Styles.ts`,
 `Vinyl.tsx`, `SeekBar.tsx`, `marquee.tsx`, `docs/widgets.md`,
 `docs/nothing-interactions.md`, `assets/fonts/`, `THIRD_PARTY.md`
 (accessed 2026-11-25, dev history through v3.9.x).
+
+## Haptics & sound audit (2026-11-25, docs/feedback.md)
+
+| Claim | Verdict | Source |
+|---|---|---|
+| Predefined effects (EFFECT_TICK/CLICK/HEAVY_CLICK/DOUBLE_CLICK) via `createPredefined` are Android 10+, device-tailored, automatic fallback | ✅ | developer.android.com VibrationEffect reference + haptics-apis page |
+| Composition primitives (PRIMITIVE_TICK/CLICK/LOW_TICK/THUD/SPIN/rise/fall, scale 0–1) are Android 11+ per constant, **no automatic fallback** — check `areAllPrimitivesSupported` | ✅ | developer.android.com custom-haptic-effects + source.android.com haptics-constants-primitives |
+| Android 16 (26Q4) adds `VibrationEffect.Builder` + Presets as the preferred composition API with automatic fallback | ✅ | developer.android.com custom-haptic-effects ("On Android 16 (26Q4), VibrationEffect.Builder is the preferred API") |
+| A crisp LRA click lasts 10–20 ms; unbraked actuators can ring ~300 ms | ✅ | developer.android.com actuators primer; TI LRA primer |
+| Nothing Phone (2) actuator is a small Z-axis LRA | ⚠️ single third-party source | jonesconsortium.com mobile-haptic-feedback latency survey (actuator table) |
+| `VIBRATE` permission required for VibrationEffect use | ✅ | developer.android.com haptics-apis |
+| Nothing-integrated sound+light for third-party apps goes through the Glyph Developer Kit — API key from Nothing required, unkeyed debug expires after 48 h | ✅ | github.com/Nothing-Developer-Programme/Glyph-Developer-Kit README; nothing.tech/pages/glyph-developer-kit |
+| Glyph Composer composes ringtones that sync sound with glyph LEDs | ✅ | nothing.tech Glyph Composer; press coverage (gadgetbridge.com, nerdschalk.com) |
+| Nothing system UI plays no tap/click sounds — interaction feedback is haptic | 📌 | absence claim from the measured screenshot set; no system tap-sound evidence found. Treat as impl default |
+| Haptic vocabulary (6 gestures × predefined effects, amplitude 100–200, strength = amplitude scale) | ⚠️ impl | Essential Island `util/HapticStyle.kt` (shipped) |
+| Scrub ticks fire on selection change only | ⚠️ impl | dashbord `docs/DESIGN.md` + `useChartScrub.ts` |
+| Alert sound ducks (never stops) the user's audio, then restores | ⚠️ impl | dashbord `restTimerAudio.ts` + native `RestTimerAudio.duckAndDing` (transient-can-duck focus) |
+
+Sources (added): developer.android.com
+(/reference/android/os/VibrationEffect, /develop/ui/views/haptics/haptics-apis,
+/develop/ui/views/haptics/custom-haptic-effects,
+/develop/ui/views/haptics/actuators), source.android.com
+(/docs/core/interaction/haptics/haptics-constants-primitives),
+github.com/Nothing-Developer-Programme/Glyph-Developer-Kit,
+nothing.tech/pages/glyph-developer-kit, jonesconsortium.com
+mobile-haptic-feedback-latency-test (2026-11-25).
