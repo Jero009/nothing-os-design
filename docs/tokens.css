@@ -86,3 +86,6 @@ html.theme-os5.theme-light {
 
 /* Native home-screen widgets can't frost (RemoteViews): */
 /* panel #D9141414 · radius 28dp · hairline #1FFFFFFF             */
+/* ⚠️ those are ANDROID ARGB values (alpha first). In CSS write   */
+/* rgba: panel rgba(19,19,19,0.08) · hairline rgba(255,255,255,.12) */
+/* — #1FFFFFFF in CSS parses as RRGGBBAA = opaque cyan.            */

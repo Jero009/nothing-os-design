@@ -105,7 +105,7 @@
     padding:22px;border-radius:var(--nt-radius-lg);
     background:linear-gradient(160deg,#1d2433 0%,#3a2c4f 45%,#6b3550 100%)}
   html.theme-light .wgrid{background:linear-gradient(160deg,#cdd6e6 0%,#e2d5ee 45%,#f2c9d8 100%)}
-  .wcard{background:#1B1B1B;border-radius:24px;padding:18px;border:1px solid #1FFFFFFF;color:#fff}
+  .wcard{background:#1B1B1B;border-radius:24px;padding:18px;border:1px solid rgba(255,255,255,.12);color:#fff}
   html.theme-light .wcard{background:#F1F1F1;border-color:rgba(0,0,0,.08);color:#0A0A0A}
   .wclock{font-family:"Doto",monospace;font-weight:500;font-size:38px;line-height:1;letter-spacing:.04em}
   .wkick{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:8px}
@@ -118,11 +118,14 @@
   .wmus .t{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .wmus .a{color:rgba(255,255,255,.55);font-size:11px}
   html.theme-light .wmus .a{color:rgba(0,0,0,.5)}
-  .wmus .ctr{display:flex;gap:14px;justify-content:center;margin-top:12px}
-  .wmus .ctr i{font-style:normal;font-size:15px;color:rgba(255,255,255,.9)}
-  html.theme-light .wmus .ctr i{color:rgba(0,0,0,.7)}
+  .wmus .ctr{display:flex;gap:14px;justify-content:center;align-items:center;margin-top:12px}
+  .wmus .ctr svg{width:15px;height:15px;display:block}
   .wmus .ctr .pp{background:var(--nt-text);color:var(--nt-bg);border-radius:50%;width:34px;height:34px;
-    display:inline-flex;align-items:center;justify-content:center;font-size:12px}
+    display:inline-flex;align-items:center;justify-content:center}
+  .wmus .ctr .pp svg{width:11px;height:11px}
+  .qtile .ic svg{width:17px;height:17px;display:block}
+  /* unicode symbol glyphs (⏮ ✕ ◎) render as platform EMOJI — icons are inline SVG only */
+  .svgi{stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
   .wfoot{font-size:11.5px;color:var(--nt-text-dim);margin-top:12px;line-height:1.6}
 
   /* ---------- tokens ---------- */
@@ -236,9 +239,9 @@
 
     <div class="k">Quick-settings tiles — ON is solid white + black icon (tap them)</div>
     <div class="qs">
-      <button class="qtile" aria-pressed="true"><span class="ic">✕</span><span><b>Wi-Fi</b><small>connected</small></span></button>
-      <button class="qtile" aria-pressed="false"><span class="ic">○</span><span><b>Torch</b><small>off</small></span></button>
-      <button class="qtile" aria-pressed="false"><span class="ic">◎</span><span><b>Bluetooth</b><small>off</small></span></button>
+      <button class="qtile" aria-pressed="true"><span class="ic"><svg class="svgi" viewBox="0 0 24 24"><path d="M2.5 9a15 15 0 0 1 19 0M5.5 12.5a10.5 10.5 0 0 1 13 0M8.5 16a6 6 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1.4" fill="currentColor" stroke="none"/></svg></span><span><b>Wi-Fi</b><small>connected</small></span></button>
+      <button class="qtile" aria-pressed="false"><span class="ic"><svg class="svgi" viewBox="0 0 24 24"><path d="M9 2h6v3.5L13 9v11a1 1 0 0 1-1 1h0a1 1 0 0 1-1-1V9L9 5.5z"/></svg></span><span><b>Torch</b><small>off</small></span></button>
+      <button class="qtile" aria-pressed="false"><span class="ic"><svg class="svgi" viewBox="0 0 24 24"><path d="M6.5 6.5 17.5 17.5 12 22V2l5.5 5.5-11 11"/></svg></span><span><b>Bluetooth</b><small>off</small></span></button>
     </div>
 
     <div class="k">Slider — 4px track, white fill, mono value (drag it)</div>
@@ -290,7 +293,11 @@
             <div class="art"></div>
             <div class="meta"><div class="t">Midnight City</div><div class="a">M83</div></div>
           </div>
-          <div class="ctr"><i>⏮</i><span class="pp">❚❚</span><i>⏭</i></div>
+          <div class="ctr">
+            <svg class="svgi" viewBox="0 0 24 24"><path d="M7 5v14" stroke-width="2.2"/><path d="M19 5v14l-10-7z" fill="currentColor" stroke="none"/></svg>
+            <span class="pp"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg></span>
+            <svg class="svgi" viewBox="0 0 24 24"><path d="M17 5v14" stroke-width="2.2"/><path d="M5 5v14l10-7z" fill="currentColor" stroke="none"/></svg>
+          </div>
         </div>
         <div class="wfoot">Controls and state — never a per-second playhead.</div>
       </div>

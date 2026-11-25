@@ -74,6 +74,9 @@ VALUES, never literals in components.
   prefer whitespace + group cards. No zebra striping.
 - Icon + label rows: leading icon 24dp outline (1.5dp stroke, currentColor,
   monochrome — never filled, never multicolored).
+- **Icons are never unicode glyphs.** Symbol characters (⏮ ⏭ ✕ ◎ ❚❚) render
+  as platform **emoji** — colored, filled, font-dependent. Icons are inline
+  SVG (stroke ≈1.5–2.2, round caps, currentColor) or true dot-grids.
 
 ## Dot-matrix iconography
 
@@ -93,6 +96,9 @@ VALUES, never literals in components.
   be shrinkable to 1 cell where the layout allows.
 - Native widgets can't frost (RemoteViews): panel = `#D9141414`, 28dp radius,
   `#1FFFFFFF` hairline stroke. Fonts ship as TTFs in res/font.
+  ⚠️ Those values are **Android ARGB** (alpha first). In CSS the same colors
+  are `rgba(19,19,19,0.08)`-style — writing `#1FFFFFFF` in CSS parses as
+  RRGGBBAA = an opaque cyan. Convert the format, never copy the literal.
 - RemoteViews allow-list: TextView/LinearLayout/FrameLayout/ImageView only.
 - Data encodings identical between app and widget; skin switch re-renders via
   a pushed themeStyle field, defaulting to classic on garbage.

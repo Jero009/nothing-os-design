@@ -61,9 +61,12 @@
   .wmus .meta{flex:1; min-width:0}
   .wmus .t{font-weight:600; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
   .wmus .a{color:rgba(255,255,255,.55); font-size:11px}
-  .wmus .ctr{display:flex; gap:14px; justify-content:center; margin-top:12px}
-  .wmus .ctr i{font-style:normal; font-size:15px; color:rgba(255,255,255,.9)}
+  .wmus .ctr{display:flex; gap:14px; justify-content:center; align-items:center; margin-top:12px}
+  .wmus .ctr svg{width:15px;height:15px;display:block}
   .wmus .ctr .pp{background:#fff; color:#000; border-radius:50%; width:34px; height:34px; display:inline-flex; align-items:center; justify-content:center}
+  .wmus .ctr .pp svg{width:11px;height:11px}
+  .qtile .ic svg{width:16px;height:16px;display:block}
+  .svgi{stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
   .wfoot{font-size:11px; color:rgba(255,255,255,.55); margin-top:14px; line-height:1.5}
   /* app-elements panel */
   .lcard{background:var(--card); border-radius:13px; padding:4px 16px}
@@ -101,7 +104,7 @@
   <div class="k">Input — fill only, no border</div>
   <div class="input">Search…</div>
   <div class="k">Quick-settings tile — ON state is solid white + black icon</div>
-  <div class="qs"><div class="qtile"><span class="ic">✕</span><div><b>Wi-Fi</b><br><small>connected</small></div></div><div class="qtile" style="background:var(--s2)"><span class="ic" style="background:var(--s2);color:var(--dim)">○</span><div><b>Torch</b><br><small>off</small></div></div></div>
+  <div class="qs"><div class="qtile"><span class="ic"><svg class="svgi" viewBox="0 0 24 24"><path d="M2.5 9a15 15 0 0 1 19 0M5.5 12.5a10.5 10.5 0 0 1 13 0M8.5 16a6 6 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1.4" fill="currentColor" stroke="none"/></svg></span><div><b>Wi-Fi</b><br><small>connected</small></div></div><div class="qtile" style="background:var(--s2)"><span class="ic" style="background:var(--s2);color:var(--dim)"><svg class="svgi" viewBox="0 0 24 24"><path d="M9 2h6v3.5L13 9v11a1 1 0 0 1-1 1h0a1 1 0 0 1-1-1V9L9 5.5z"/></svg></span><div><b>Torch</b><br><small>off</small></div></div></div>
   <div class="k">Hero numeral — dot matrix, character only</div>
   <div class="hero">82%</div>
 </section>
@@ -120,7 +123,7 @@
   <div class="k">Input — fill darker than the page</div>
   <div class="input">Search…</div>
   <div class="k">Quick-settings tile</div>
-  <div class="qs"><div class="qtile"><span class="ic">✕</span><div><b>Wi-Fi</b><br><small>connected</small></div></div><div class="qtile" style="background:var(--s2)"><span class="ic" style="background:var(--s2);color:var(--dim)">○</span><div><b>Torch</b><br><small>off</small></div></div></div>
+  <div class="qs"><div class="qtile"><span class="ic"><svg class="svgi" viewBox="0 0 24 24"><path d="M2.5 9a15 15 0 0 1 19 0M5.5 12.5a10.5 10.5 0 0 1 13 0M8.5 16a6 6 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1.4" fill="currentColor" stroke="none"/></svg></span><div><b>Wi-Fi</b><br><small>connected</small></div></div><div class="qtile" style="background:var(--s2)"><span class="ic" style="background:var(--s2);color:var(--dim)"><svg class="svgi" viewBox="0 0 24 24"><path d="M9 2h6v3.5L13 9v11a1 1 0 0 1-1 1h0a1 1 0 0 1-1-1V9L9 5.5z"/></svg></span><div><b>Torch</b><br><small>off</small></div></div></div>
   <div class="k">Hero numeral</div>
   <div class="hero">82%</div>
 </section>
@@ -144,7 +147,11 @@
       <div class="art"></div>
       <div class="meta"><div class="t">Midnight City</div><div class="a">M83</div></div>
     </div>
-    <div class="ctr"><i>⏮</i><span class="pp">❚❚</span><i>⏭</i></div>
+    <div class="ctr">
+      <svg class="svgi" viewBox="0 0 24 24"><path d="M7 5v14" stroke-width="2.2"/><path d="M19 5v14l-10-7z" fill="currentColor" stroke="none"/></svg>
+      <span class="pp"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg></span>
+      <svg class="svgi" viewBox="0 0 24 24"><path d="M17 5v14" stroke-width="2.2"/><path d="M5 5v14l10-7z" fill="currentColor" stroke="none"/></svg>
+    </div>
   </div>
   <div class="wfoot">Classic panels are <b>opaque #1B1B1B</b> at every style×mode; the OS 5 translucent material exists only over wallpaper. No progress tickers — controls and state, never a moving playhead.</div>
 </section>
