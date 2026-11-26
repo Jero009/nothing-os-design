@@ -30,10 +30,14 @@
   .bar{max-width:1100px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
   .brand{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--nt-text-dim);margin-right:auto}
   .brand b{color:var(--nt-text);font-weight:600}
-  .tgl{display:flex;border:1px solid var(--nt-border);border-radius:999px;padding:3px;gap:2px}
-  .tgl button{border:0;background:transparent;color:var(--nt-text-dim);font:inherit;font-size:11px;font-weight:600;
-    letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:999px;cursor:pointer}
-  .tgl button[aria-pressed="true"]{background:var(--nt-surface-2,var(--nt-surface));color:var(--nt-text)}
+  .tgl{display:flex;position:relative;border:1px solid var(--nt-border);border-radius:999px;padding:3px;gap:2px}
+  .tgl button{position:relative;z-index:1;border:0;background:transparent;color:var(--nt-text-dim);font:inherit;font-size:11px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:999px;cursor:pointer;
+    transition:transform var(--nt-motion-fast) var(--nt-ease-std)}
+  .tgl button:active{transform:scale(var(--nt-press-scale))}
+  .tgl button[aria-pressed="true"]{color:var(--nt-bg)}
+  .thumb{position:absolute;border-radius:999px;background:var(--nt-text);z-index:0;
+    transition:left 200ms var(--nt-ease-std), width 200ms var(--nt-ease-std), top 200ms var(--nt-ease-std), height 200ms var(--nt-ease-std)}
   main{max-width:1100px;margin:0 auto;padding:32px 20px 80px}
   nav.tabs{display:flex;gap:2px;border:1px solid var(--nt-border);border-radius:999px;padding:3px;width:max-content;
     max-width:100%;overflow:auto;margin-bottom:30px}
@@ -68,17 +72,18 @@
   .sw{width:46px;height:32px;border-radius:999px;position:relative;border:0;cursor:pointer;
     background:var(--nt-surface-2);transition:background var(--nt-motion-fast) var(--nt-ease-std)}
   .sw::after{content:'';position:absolute;width:24px;height:24px;border-radius:50%;top:4px;left:4px;
-    background:var(--nt-text-dim);transition:left var(--nt-motion-fast) var(--nt-ease-std), background var(--nt-motion-fast) var(--nt-ease-std)}
+    background:var(--nt-text-dim);transition:left 200ms var(--nt-ease-std), background 200ms var(--nt-ease-std)}
   .sw[aria-pressed="true"]{background:var(--nt-text)}
   .sw[aria-pressed="true"]::after{left:18px;background:var(--nt-bg)}
   .chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--nt-border);border-radius:999px;
     padding:5px 12px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--nt-text-dim)}
   .chip .dot{width:7px;height:7px;border-radius:50%;background:var(--nt-accent);animation:pulse 1s steps(4) infinite}
   @keyframes pulse{0%{opacity:1}50%{opacity:.25}100%{opacity:1}}
-  .seg{display:inline-flex;background:var(--nt-tile);border-radius:999px;padding:5px;gap:2px}
-  .seg button{border:0;background:transparent;font:inherit;font-size:13px;font-weight:600;color:var(--nt-text-dim);
-    padding:6px 16px;border-radius:999px;cursor:pointer}
-  .seg button[aria-pressed="true"]{background:var(--nt-text);color:var(--nt-bg)}
+  .seg{display:inline-flex;position:relative;background:var(--nt-tile);border-radius:999px;padding:5px;gap:2px}
+  .seg button{position:relative;z-index:1;border:0;background:transparent;font:inherit;font-size:13px;font-weight:600;color:var(--nt-text-dim);
+    padding:6px 16px;border-radius:999px;cursor:pointer;transition:transform var(--nt-motion-fast) var(--nt-ease-std)}
+  .seg button:active{transform:scale(var(--nt-press-scale))}
+  .seg button[aria-pressed="true"]{color:var(--nt-bg)}
   .tile{background:var(--nt-tile);border-radius:var(--nt-radius-sm);padding:12px 14px}
   .tile span{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--nt-text-dim);margin-bottom:6px}
   .tile strong{font-family:var(--nt-font-mono),monospace;font-weight:500;font-size:20px}
@@ -450,6 +455,58 @@
     b.addEventListener('click', function(){ store('nod-style', b.dataset.style); applyTheme(); });
   });
   applyTheme();
+
+  /* ---- sliding thumb for segment groups (MODE, STYLE, demo .seg) ----
+     matches the measured Nothing widget toggle: knob/thumb glides ~200ms,
+     ease-in-out, no bounce. */
+  var thumbPlaces = [];
+  document.querySelectorAll('.tgl, .seg').forEach(function(group){
+    if (group.dataset.thumb === '1') return;
+    group.dataset.thumb = '1';
+    var th = document.createElement('span');
+    th.className = 'thumb';
+    th.setAttribute('aria-hidden', 'true');
+    th.style.opacity = '0';
+    group.appendChild(th);
+    var btns = group.querySelectorAll('button');
+    function place(anim){
+      var on = group.querySelector('button[aria-pressed="true"]');
+      if (!on){ th.style.opacity = '0'; return; }
+      th.style.opacity = '1';
+      if (!anim || reduced) th.style.transition = 'none';
+      th.style.width  = on.offsetWidth  + 'px';
+      th.style.height = on.offsetHeight + 'px';
+      th.style.top    = on.offsetTop    + 'px';
+      th.style.left   = on.offsetLeft   + 'px';
+      if (!anim || reduced){
+        void th.offsetWidth; /* force layout so the jump lands while the transition is off */
+        requestAnimationFrame(function(){ th.style.transition = ''; });
+      }
+    }
+    btns.forEach(function(b){
+      b.addEventListener('click', function(){
+        btns.forEach(function(x){ x.setAttribute('aria-pressed','false'); });
+        b.setAttribute('aria-pressed','true');
+        place(true);
+      });
+    });
+    group.querySelectorAll('button[data-mode], button[data-style]').forEach(function(b){
+      /* theme switches re-point the font vars, so EVERY group's buttons resize —
+         re-place them all, not just the one that was clicked */
+      b.addEventListener('click', function(){
+        setTimeout(function(){ thumbPlaces.forEach(function(p){ p(true); }); }, 0);
+      });
+    });
+    thumbPlaces.push(place);
+    place(false);
+    window.addEventListener('load', function(){ place(false); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ place(false); });
+    /* a font arriving after first use (e.g. Geist on the first classic->os5
+       switch) re-lays-out buttons asynchronously — re-place without animating */
+    if (document.fonts && document.fonts.addEventListener)
+      document.fonts.addEventListener('loadingdone', function(){ thumbPlaces.forEach(function(p){ p(false); }); });
+    window.addEventListener('resize', function(){ place(false); });
+  });
 
   /* ---- tabs ---- */
   document.querySelectorAll('nav.tabs button').forEach(function(b){
