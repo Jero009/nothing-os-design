@@ -103,7 +103,13 @@ copied) for the 2026-11-25 cross-check; see
 ## Fonts (legal note)
 
 Nothing's own typefaces are proprietary brand assets — **do not ship them**.
-The spec uses these open (SIL OFL 1.1) stand-ins:
+The real faces are **NDot 55** (logotype & product names only), **NDot 57**
+(deprecated ~2022), the **NType82** family, and **Lettera Mono LL** (Colophon
+Foundry, © Nothing Technology Ltd) — none is licensed for reuse. Note that
+**Doto is not a Nothing font**: it never appears in any Nothing app or promo
+material. It is an independent open-source face (Óliver Lalan, Google Fonts,
+SIL OFL 1.1) chosen as the closest legal stand-in for Nothing's dot-matrix
+role. The spec uses these open (SIL OFL 1.1) stand-ins:
 
 | Role | Classic | OS 5 |
 |---|---|---|
