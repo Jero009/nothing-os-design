@@ -3,8 +3,9 @@
 Verdicts: ✅ verified · ⚠️ deviation/nuance · 📌 unspecified by Nothing
 ([impl] by definition). Audit covers the dashbord app's DESIGN.md +
 variables.css claims, this skill's own claims, a (2026-11-25)
-second-implementation cross-check against MissingCore/Music, and a
-(2026-11-28) on-device system-UI type-scale measurement pass.
+second-implementation cross-check against MissingCore/Music, a
+(2026-11-28) on-device system-UI type-scale measurement pass, and a
+(2026-11-28) second-source cross-check on independent OS 5 devices.
 
 ## Verified correct
 
@@ -177,7 +178,7 @@ font file. These are our own measurements — not Nothing-published values.
 | Page title "Settings" serif cap 45px (≈31–32sp); sub-page serif title "My devices" 24px (≈17sp) | ✅ measured | settings-dark.png; headphones-nc-dark.png |
 | Settings row label cap 18–20px (≈13sp); search placeholder 22px (≈15sp) | ✅ measured | settings-dark.png |
 | QS tile label 16–18px (≈12sp); clock digits 24px (≈17sp, weight ≈600); date 19px (≈13sp); status pill 26px (≈17sp); "54%" 20px (≈14sp) | ✅ measured | qs-dark.png |
-| Status bar time 23px (≈16sp) — larger than AOSP's 14sp | ✅ measured | settings-dark.png |
+| Status bar time 23px (≈16sp) — larger than AOSP's 14sp | ⚠️ corrected same day: 23px was the adjacent notification-icon row; clock digits are 16px (≈11sp at the assumed density) — see the second-source section below | settings-dark.png (pixel row-profile re-verified) |
 | Card title 17px (≈12sp) sits BELOW row-label size (≈13sp); subtext 17px (≈11–12sp); fine print "90%" 14px (≈10sp) | ✅ measured | headphones-nc-dark.png |
 | Slider tick labels unreadable (luminance < 28 in sanitized captures); settings value/subtext strips clipped | 📌 not measurable | headphones-nc-dark.png; settings-dark.png |
 
@@ -185,3 +186,27 @@ Notes: the serif title faces are proprietary, so their sp equivalence
 assumes cap ≈ 0.70em and is approximate. Corroborates the 2026-11-14
 finding "Hero titles use the NType82 serif typewriter face, functional
 text Geist" — the serif appears at sub-page title sizes too (≈17sp).
+
+## Type-scale second-source cross-check (2026-11-28, web devices + emulator)
+
+Independent OS 5 devices (Phone (3), Phone (3a), Phone (2a)) from the OS 5.0
+announcement thread, plus Nothing X 2.1.1 on a 420 dpi emulator (real
+Nothing app text at a known density). Files and per-file sources:
+`docs/screenshots/web/` (SOURCES.md there). Method: same ink-height row
+profiling with padded word boxes; contested values re-verified at pixel
+level. Full tables: typography.md "Cross-device validation".
+
+| Measurement | Verdict | Source |
+|---|---|---|
+| Ink-height method reproduces the 720×1600 table within ±1–3px per role | ✅ validated | settings-dark.png; qs-dark.png; headphones-nc-dark.png re-measured |
+| Status-clock digits are 16px, not 23px — the 23px band is the adjacent notification icons; ≈11sp at the assumed density 2.0 | ⚠️ corrected | settings-dark.png (pixel row profile: clock 44–57, icons 35–57) |
+| Status-clock size varies per device (21px / 27px / 32–36px raw on Phone (2a)/(3a)/(3)) — no single device-independent status-clock sp | ⚠️ device-specific | web/ community shots |
+| Phone (3) system UI at DevCheck-verified 458 dpi (2.8625): page serif titles 63–64px (≈22–23sp), sub-page titles 36–45px (≈16sp), body 32px asc (≈14–15sp) | ✅ measured, density verified in-shot | community-phone3-devcheck-display.png; community-phone3-apps-unverified-dark.png; community-phone3-beta-dialog-dark.png |
+| Nothing X 2.1.1 at 420 dpi (2.625): body 26px asc ≈13sp, title cap 46px ≈24–25sp — method lands on clean sp steps on authentic Nothing app UI | ✅ validated | nothing-x-scanning-emulator.png |
+| Absolute sp on the 720-device rests on the unverified density-2.0 assumption; the original corroboration (88px rows = 44dp) assumed the same density (circular). Hierarchy reproduces; treat absolute sp as ±10–15% | ⚠️ uncertainty stated | typography.md "Cross-device validation" |
+| OS 5 ships ≥2 QS layouts: compact (720-device, 16–18px tile labels) and redesigned large-clock shade (Phone (3a): 56px clock, 31px labels); official "QS separate vs Classic" material corroborates | 📌 two layouts | community-phone3a-qs-light.png; official-us-nothing-tech-qs-separate-vs-classic.webp |
+| Phone (3a) / Phone (2a) density readouts absent from shots; their sp derived only comparatively | 📌 not derivable from captured shots | community-phone3a-*.png; community-phone2a-beta-ota-dark.png |
+
+Notes: the correction is applied to typography.md in the same revision
+(status-time row + findings bullet). The serif sub-page title finding
+survives the cross-check — Phone (3) shows the same tier at ≈16sp.

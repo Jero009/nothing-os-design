@@ -74,7 +74,7 @@ cap ≈ 0.70em and is approximate.
 | QS tile label | "Wi-Fi" / "Torch" / "Modes" (qs-dark) | cap | 16–18px | ≈12sp |
 | QS clock | "16:05" (qs-dark) | digit height, weight ≈600 | 24px | ≈17sp |
 | QS date (dim) | "Sat 14 Nov" (qs-dark) | asc–baseline | 19px | ≈13sp |
-| Status bar time | "16:05" (settings-dark) | digit height | 23px | ≈16sp |
+| Status bar time | "16:05" (settings-dark) | digit height | 16px | ≈11sp (density-2.0 assumed) |
 | Battery % (QS header) | "54%" (qs-dark) | digit height | 20px | ≈14sp |
 | QS status pill | "…evice is con…" (qs-dark) | asc–baseline, weight ≈500 | 26px | ≈17sp |
 | Card subtext (dim) | "On · Adaptive" (headphones-nc-dark) | asc–baseline | 17px | ≈11–12sp |
@@ -85,14 +85,71 @@ Adaptive" — luminance below 28, dimmer than ~10% white) and the settings
 row value/subtext lines (clipped/blur strips in the sanitized captures).
 
 Findings:
-- Status text runs larger than stock Android (status time ≈16sp vs AOSP
-  14sp); the QS clock is only ≈17sp but heavy (≈600) — the "chunky" look
-  is weight, not size.
+- The QS clock is only ≈17sp but heavy (≈600) — the "chunky" look
+  is weight, not size. (An earlier revision claimed status-bar time ≈16sp
+  "larger than AOSP": that 23px band was the adjacent notification icons;
+  the clock digits are 16px. Cross-device status clocks vary — see the
+  validation section below.)
 - Sub-page serif titles exist (≈17sp): the typewriter face is not only a
   top-level hero move.
 - Card titles (≈12sp) sit BELOW list row labels (≈13sp) — hierarchy comes
   from weight + tracking, not size.
 - Dim roles (date, subtext, placeholder, fine print) stay 50% white.
+
+### Cross-device validation (2026-11-28 — second measurement source)
+
+The single-device table above was re-measured against independent OS 5
+devices from web sources (`docs/screenshots/web/`, per-file sources in
+`docs/screenshots/web/SOURCES.md`) using the same ink-height row profiling
+with padded word boxes, plus Nothing X 2.1.1 on a 420 dpi emulator as an
+app-side check (real Nothing app text at a known density).
+
+Density evidence — absolute sp requires it per device:
+
+| Device | Evidence | Density |
+|---|---|---|
+| Phone (3) | DevCheck page in shot: "458 dpi (xhdpi)", "978dp x 440dp" | 2.8625 (verified) |
+| Emulator (Pixel 6 profile, API 35) | `wm density` | 2.625 (verified) |
+| Phone (3a) | no readout in shot | unknown |
+| Phone (2a) | no readout in shot | unknown |
+| 720×1600 source device (table above) | none; 2.0 assumed (720px = 360dp) | unverified |
+
+Measured ink heights per role (px):
+
+| Role | 720 dev (assumed 2.0) | Phone (3) @2.8625 | Phone (3a) @1080 | Phone (2a) @1084 | Nothing X @2.625 |
+|---|---|---|---|---|---|
+| Status-bar clock digits | 16 | 32–36 | 27 | 21 | 31 (stock Android 17) |
+| Page/section serif title (asc–desc) | 57 ("Settings") | 63–64 | 78–84 | — | — |
+| Page title (dot face, cap) | — | — | — | — | 46 ("SCANNING") |
+| Sub-page title | 24 cap ("My devices") | 36–45 | — | — | — |
+| Card/list title | 17 cap | — | 40–41 asc | — | — |
+| Row label | 18–20 cap | — | 28–41 asc | 19–20 asc | — |
+| Body text | — | 32 asc (≈14–15sp) | 34 asc | 19–29 | 26 asc (≈13sp) |
+| QS tile label | 16–18 cap | — | 31–32 asc | — | — |
+| QS shade clock | 24 digits | — | 56 digits | — | — |
+
+Findings:
+
+- The method validates: re-measuring the 720×1600 shots reproduces the table
+  within ±1–3px per role, and Nothing X app text at the verified 420 dpi
+  lands on clean sp steps (body ≈13sp, page title ≈24–25sp).
+- Correction: the earlier "Status bar time 23px ≈16sp" measured the adjacent
+  notification-icon row (icons are 23px tall), not the clock — the clock
+  digits are 16px (≈11sp at the assumed density). Status-clock size is NOT
+  uniform across OS 5 devices (21–36px raw across four devices); treat any
+  single status-clock sp value as device-specific.
+- Absolute sp on the 720-device rests on the unverified density-2.0
+  assumption; its original corroboration (88px rows = 44dp) assumed the same
+  density and is circular. Role hierarchy and relative sizes reproduce
+  across all devices; treat the table's absolute sp as ±10–15% until a
+  density readout for that device exists.
+- OS 5 ships at least two quick-settings layouts: the 720-device's compact
+  shade (16–18px tile labels) and a redesigned large-clock shade on
+  Phone (3a) (56px clock, 31px tile labels) — matching the official
+  "QS separate vs Classic" material. Tile-label sp differs between them;
+  don't mix measurements across the two layouts.
+- Serif sub-page titles are confirmed on a second device: Phone (3) shows
+  the same tier at ≈16sp (36–45px @2.8625), corroborating ≈17sp above.
 
 The dashbord scale below is the reference app's own scale — prefer this
 device-measured table when building Nothing-style UI.

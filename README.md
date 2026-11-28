@@ -69,7 +69,7 @@ Concrete recipes (full tables in
 | File | What's in it |
 |---|---|
 | [`docs/tokens.md`](docs/tokens.md) | Full token tables: brand palette, classic dark/light, OS 5 deltas, complete 2×2 style×mode matrix, accent decision table — all measured values |
-| [`docs/typography.md`](docs/typography.md) | Font roles & stacks, per-element type scale (size/weight/tracking), Nothing's official leading/tracking specs |
+| [`docs/typography.md`](docs/typography.md) | Font roles & stacks, per-element type scale (size/weight/tracking), Nothing's official leading/tracking specs, device-measured OS 5 system-UI scale with a multi-device cross-check |
 | [`docs/components.md`](docs/components.md) | Buttons, switches, chips, lists, alerts, dot-matrix icon construction (9×9 / 25×25), media-player patterns, motion, accessibility |
 | [`docs/feedback.md`](docs/feedback.md) | Haptics & sound: platform APIs, the semantic haptic vocabulary, alarm-only sound with audio ducking, Glyph Developer Kit notes |
 | [`docs/third-party-case-studies.md`](docs/third-party-case-studies.md) | Source-checked study of a second shipped implementation ([MissingCore/Music](https://github.com/MissingCore/Music)) — palette cross-checks, accent ramps, media-player patterns |
@@ -82,7 +82,12 @@ Concrete recipes (full tables in
 Measurements were taken from on-device screenshots (720×1600) by sampling
 pixel colors at known element positions, fitting corner radii by scanning
 edge insets and least-squares fitting a circle, and cross-checking dominant
-colors per region. Device-under-test ran Nothing OS 5.0 (Android 17). Values
+colors per region. Device-under-test ran Nothing OS 5.0 (Android 17). A
+second measurement pass (2026-11-28) validated the type scale against
+independent OS 5 devices from web sources (`docs/screenshots/web/` —
+Phone (3) / (3a) / (2a), sources in SOURCES.md there) and Nothing X 2.1.1
+on a 420 dpi emulator; per-device density evidence and uncertainty bands
+are documented in `docs/typography.md`. Values
 labeled [impl] come from two production app implementations that have
 shipped through multiple releases: the
 [dashbord](https://github.com/Jero009/dashbord) app
