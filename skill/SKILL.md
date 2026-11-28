@@ -1,6 +1,6 @@
 ---
 name: nothing-os-design
-version: 1.4.2
+version: 1.5.0
 author: Hermes Agent
 license: MIT
 description: "Use when styling Nothing OS-style apps: tokens, accents."
@@ -150,11 +150,14 @@ Full tables: `references/tokens.md`.
 ## Surfaces, spacing, motion (shared) [impl]
 
 - Spacing scale 4 / 8 / 12 / 16 / 24 / 32 px; cards pad 16, page gutters 16
-  (24 on ≥600px), section gaps 24–32; max content width 760px.
+  (24 on ≥600px), section gaps 24–32; max content width 760px. Anchors:
+  measured OS side margins 14dp, group gap 13dp, rows 44dp (repo tokens.md).
 - Motion: 140 / 280 / 400 ms; entrances `cubic-bezier(0.2,0,0,1)`, standard
   `cubic-bezier(0.4,0,0.2,1)`; animate transform/opacity only; press feedback
   = scale 0.97; hover = opacity drop, never color change; global
-  `prefers-reduced-motion` handling.
+  `prefers-reduced-motion` handling. Anchors: the curves are Material's
+  standard platform curves, and Nothing's own OS 5.0 announcement animations
+  frame-time to ≈120/200/280/400/440ms transitions (repo fact-check).
 - OS 5 frost: `backdrop-filter: blur(24px) saturate(1.4)` over
   `rgba(20,20,20,.66)` (dark) / `rgba(255,255,255,.72)` (light) + one hairline
   border (white 10% / black 8%). Floating overlays use the SOLID fallback
@@ -180,6 +183,11 @@ Full tables: `references/tokens.md`.
   size; status-clock size varies per device. Full table:
   `docs/typography.md` (repo) — treat absolute sp as ±10–15% on devices
   without a density readout.
+- Two-point sourcing (2026-11-28): every token area carries ≥2 reference
+  points, ≥1 official/measured — motion frame-timed from Nothing's own
+  announcement animations (≈120/200/280/400/440ms), radii/spacing anchored
+  by the OS 5.0 announcement + device measurements, surfaces/red/type scale
+  device-measured. press-scale 0.97 remains single-source [impl], flagged.
 
 ## Components (summary — full spec in `references/components.md`)
 

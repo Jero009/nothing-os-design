@@ -58,8 +58,10 @@ are only the pre-29 fallback.
 
 ### Usage rules
 
-- **Tick only when a scrubbed selection CHANGES** (dashbord chart-scrub rule)
-  — never per frame, never per intermediate value.
+- **Tick only when a scrubbed selection CHANGES** (dashbord chart-scrub rule;
+  matches the platform pattern — Android's own controls tick on discrete
+  value changes, never per frame [official — Android, observable platform
+  behavior]) — never per frame, never per intermediate value.
 - One haptic per completed gesture; fire on commit, not on touch-down.
 - Never haptic decorative motion (entrances, marquee, pulses).
 - Respect the system: if haptic feedback is disabled system-wide, do nothing.
@@ -84,7 +86,7 @@ are only the pre-29 fallback.
 
 | Sound | When | Behavior |
 |---|---|---|
-| Alert (timer done, rest over, alarm) | user-scheduled moment | **duck, don't stop**: transient audio focus (`AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK`) lowers the user's music, play the cue, restore volume |
+| Alert (timer done, rest over, alarm) | user-scheduled moment | **duck, don't stop**: transient audio focus (`AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK` [official — Android platform API]) lowers the user's music, play the cue, restore volume |
 | Error | destructive failure | haptic first (error pattern); sound only if the alert also fires |
 | UI taps, transitions, toggles | never | haptic carries it; Nothing system UI has no tap sounds |
 

@@ -65,9 +65,9 @@ Cross-impl patterns worth adopting:
 | `--nt-data-goal` | #FFD700; light mode: #B8860B |
 | Fonts | body/head: Space Grotesk; display numerics: Doto; mono: Space Mono |
 | Tracking | label 0.12em, kicker 0.18em |
-| Radii | 8 / 16 / 24 / pill 999 |
-| Spacing | 4 / 8 / 12 / 16 / 24 / 32 |
-| Motion | 140/280/400ms; decel cubic-bezier(0.2,0,0,1); std cubic-bezier(0.4,0,0.2,1); press-scale 0.97 |
+| Radii | 8 / 16 / 24 / pill 999 — [anchors] OS cards measure ≈25px ≈ 12–13dp in BOTH styles (measured section below); the classic scale is an app choice |
+| Spacing | 4 / 8 / 12 / 16 / 24 / 32 — [anchors] measured OS: side margins 14dp, group gap 13dp, rows 44dp, QS gaps 20dp (measured section below) |
+| Motion | 140/280/400ms; decel cubic-bezier(0.2,0,0,1); std cubic-bezier(0.4,0,0.2,1); press-scale 0.97 — [anchors] curves = Material standard curves [official Android]; Nothing's own OS 5.0 announcement animations measure ≈120/200/280/400/440ms (fact-check) |
 
 ### Light (`html.theme-light`) [impl]
 
@@ -79,6 +79,10 @@ Cross-impl patterns worth adopting:
 | `--nt-text` | #0A0A0A; dim rgba(0,0,0,0.5) |
 | `--nt-ink` | 10,10,10 |
 
+[anchors] The OS itself measures slightly different light values — pages
+#F1F1F1 with #FCFCFC/#FFFFFF cards, QS shade #E2E2E2 with #D1D1D1 tiles
+(measured matrix below). The impl values are the app's own light ramp.
+
 ## App tokens — OS 5 deltas (`html.theme-os5`, re-points only) [impl]
 
 | Token | OS 5 dark | OS 5 light |
@@ -88,7 +92,7 @@ Cross-impl patterns worth adopting:
 | `--nt-font-accent-display` | Doto — HERO ONLY | Doto — hero only |
 | `--nt-font-mono` | Geist Mono | Geist Mono |
 | `--nt-tracking-label` / `kicker` | 0.10em / 0.16em | same |
-| `--nt-radius-sm/md/lg` | 12 / 20 / 28 | 12 / 20 / 28 |
+| `--nt-radius-sm/md/lg` | 12 / 20 / 28 | 12 / 20 / 28 — [anchors] measured OS: cards ≈12–13dp, QS tiles ≈20dp, theme rows ≈9dp (measured section below) |
 | `--nt-surface` | rgba(20,20,20,0.66) + frost | rgba(255,255,255,0.72) + frost |
 | `--nt-surface-2` | rgba(44,44,44,0.72) | rgba(255,255,255,0.9) |
 | `--nt-surface-fallback` (solid, overlays) | #141414 | #FFFFFF |

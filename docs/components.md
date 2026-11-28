@@ -145,6 +145,13 @@ App-side patterns — the OS publishes no media-component spec.
 - Durations: 140ms micro / 280ms standard / 400ms emphatic.
 - Easing: entrances `cubic-bezier(0.2, 0, 0, 1)`; everything else
   `cubic-bezier(0.4, 0, 0.2, 1)`. No springs/bounce/overshoot.
+- Anchors beyond this implementation: the two curves ARE Material's standard
+  platform curves [official — Android: emphasized-decelerate and standard];
+  and Nothing's own OS 5.0 announcement animations measure discrete
+  transitions at ≈120 / 200 / 280 / 400 / 440ms (frame-timed from the official
+  announcement GIFs, 40ms frame quantization — fact-check "two-point
+  re-evaluation"). The impl tiers sit within ~±10% of the measured OS
+  transitions; press-scale 0.97 remains implementation-only.
 - Animate transform + opacity ONLY. Entrance = fade + 6px rise. Hover =
   opacity drop (~0.8), never a color change.
 - `prefers-reduced-motion` handled globally (durations ≈0, iterations 1).

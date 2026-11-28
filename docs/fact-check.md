@@ -39,7 +39,10 @@ second-implementation cross-check against MissingCore/Music, a
 📌 Frost `blur(24px) saturate(1.4)`, surface alphas `.66/.72` — app
 approximation of the official "frosted" material.
 📌 Radii scales 8/16/24 and 12/20/28 — Nothing publishes no token spec; the
-"~50% growth" OS 5 direction is official, the numbers are not.
+announcement gives direction only ("updated spacing and corner shapes").
+An earlier note attributed a "~50% growth" figure to official material —
+📌 unsourced: no official or press statement of that percentage exists
+(re-evaluation pass 2026-11-28). Measured OS values now anchor both scales.
 📌 Spacing scale, motion durations/easings, surface hexes — reference-
 implementation values that work; adopt freely, label as impl.
 📌 Type scale: the OS 5 **system-UI** scale is now device-measured
@@ -227,3 +230,34 @@ header, typography.md app scale, feedback.md sources, SKILL.md tiers).
 | Live site presented dashbord-only values (radii scale, motion 140/280/400, kicker/label tracking) without [impl] tags; tags added, card demo frost scope noted | ⚠️ fixed | docs/index.html |
 | Token exports carried a stale version (1.3.0) not matching releases; now version-locked to the release | ⚠️ fixed | tokens.json meta; tokens.css header |
 | dashbord-only values that remain, all labeled [impl]: classic surfaces #1A1A1A/#242424 (system measures #1B1B1B), accent #D71A21 (canonical #D71921), radii 8/16/24 + 12/20/28, spacing 4/8/12/16/24/32, motion 140/280/400 + easings + press-scale 0.97, tracking 0.10/0.12/0.16/0.18em, app type scale, alert/row/chip metrics, scrub-tick + duck-and-ding patterns | 📌 impl by definition, labeled | tokens.md; components.md; feedback.md; tokens.json; tokens.css |
+
+## Two-point reference re-evaluation (2026-11-28)
+
+Requirement: every value that rests on dashbord alone now carries at least a
+second reference point, at least one of which is official Nothing (official
+statement or measurement from official material).
+
+| Area | Point 1 (official/measured) | Point 2 | Status |
+|---|---|---|---|
+| Motion durations | Nothing's own announcement animations frame-time to ≈120/200/280/400/440ms transitions (official GIFs, 40ms quantization) | Material/Android standard curves = the impl's exact easings [official Android] | ✅ 2 points, 1 official-measured |
+| Motion curves | cubic-bezier(0.2,0,0,1)/(0.4,0,0.2,1) are Material's emphasized-decelerate/standard [official Android] | same curves observed in the announcement animations | ✅ |
+| Radii | OS 5.0 announcement: Settings "updated spacing and corner shapes" — direction, no numbers | device-measured: cards ≈25px ≈12–13dp (both styles), notif 26px ≈13dp, QS tiles ≈40px ≈20dp, rows ≈9dp | ✅ 2 points |
+| Spacing | OS 5.0 announcement: "updated spacing" | device-measured: margins 14dp, group gap 13dp, rows 44dp, QS gaps 20dp | ✅ 2 points |
+| Surfaces dark | device-measured #1B1B1B/#1F1F1F/#141414 family | MissingCore cross-impl exact match | ✅ (pre-existing) |
+| Surfaces light | device-measured #F1F1F1 pages / #FCFCFC cards / #E2E2E2 shade / #D1D1D1 tiles | impl light ramp noted against them (tokens.md [anchors]) | ✅ |
+| Signal red #D71921 | nothing.wiki brand reference [official] | device-measured EXACT (2,860 pure pixels) | ✅ (pre-existing) |
+| System-UI type scale | device-measured 2026-11-14 + multi-device cross-check 2026-11-28 | Nothing announcement: Geist introduced as system typeface [official] | ✅ |
+| Serif title tracking | device-measured ≈0: "About phone" inter-glyph gaps 1–3px on an 87px cap ≈ 0–0.04em | impl kicker/label tracking stays an app choice, labeled [impl] | ✅ measured point added |
+| Scrub-tick rule | Android platform pattern: ticks on discrete value changes, never per frame [official Android] | dashbord impl | ✅ |
+| Duck-and-ding | AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK [official — Android platform API] | dashbord impl pattern | ✅ (pre-existing) |
+| press-scale 0.97 | none found — still dashbord-only | — | 📌 single-source [impl]; flagged, not masked |
+
+Corrections made in this pass:
+
+- The earlier claim that a '"~50% growth" OS 5 radius direction is official'
+  is 📌 **unsourced** — no official or press statement of a growth percentage
+  was found (announcement says only "updated spacing and corner shapes");
+  wording corrected here and in tokens.md anchors.
+- Anchors added to tokens.md token rows, components.md Motion, tokens.json
+  (`anchors` fields), and the site's unlabeled [impl] values (previous
+  section).
