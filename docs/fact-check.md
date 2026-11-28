@@ -2,8 +2,9 @@
 
 Verdicts: ✅ verified · ⚠️ deviation/nuance · 📌 unspecified by Nothing
 ([impl] by definition). Audit covers the dashbord app's DESIGN.md +
-variables.css claims, this skill's own claims, and (2026-11-25) a
-second-implementation cross-check against MissingCore/Music.
+variables.css claims, this skill's own claims, a (2026-11-25)
+second-implementation cross-check against MissingCore/Music, and a
+(2026-11-28) on-device system-UI type-scale measurement pass.
 
 ## Verified correct
 
@@ -38,8 +39,11 @@ second-implementation cross-check against MissingCore/Music.
 approximation of the official "frosted" material.
 📌 Radii scales 8/16/24 and 12/20/28 — Nothing publishes no token spec; the
 "~50% growth" OS 5 direction is official, the numbers are not.
-📌 Spacing scale, type scale, motion durations/easings, surface hexes —
-reference-implementation values that work; adopt freely, label as impl.
+📌 Spacing scale, motion durations/easings, surface hexes — reference-
+implementation values that work; adopt freely, label as impl.
+📌 Type scale: the OS 5 **system-UI** scale is now device-measured
+(2026-11-28 — see the type-scale pass below and typography.md); the
+**app** type scale remains a dashbord impl value.
 📌 Exact greys `#1A1A1A/#242424/#141414/#EBEBEB` — not official; consistent
 with the official monochrome direction.
 
@@ -159,3 +163,25 @@ Sources (added): developer.android.com
 github.com/Nothing-Developer-Programme/Glyph-Developer-Kit,
 nothing.tech/pages/glyph-developer-kit, jonesconsortium.com
 mobile-haptic-feedback-latency-test (2026-11-25).
+
+## Type-scale measurement pass (2026-11-28, system UI)
+
+Ink-height row profiling of tight text crops in `docs/screenshots/`
+(720×1600, dark style). Full table + method: typography.md "Nothing OS 5
+system UI type scale". Density 2.0 assumed (720px = 360dp; corroborated by
+88px settings rows = 44dp). Geist cap ratio 0.715 rendered from the OFL
+font file. These are our own measurements — not Nothing-published values.
+
+| Measurement | Verdict | Source |
+|---|---|---|
+| Page title "Settings" serif cap 45px (≈31–32sp); sub-page serif title "My devices" 24px (≈17sp) | ✅ measured | settings-dark.png; headphones-nc-dark.png |
+| Settings row label cap 18–20px (≈13sp); search placeholder 22px (≈15sp) | ✅ measured | settings-dark.png |
+| QS tile label 16–18px (≈12sp); clock digits 24px (≈17sp, weight ≈600); date 19px (≈13sp); status pill 26px (≈17sp); "54%" 20px (≈14sp) | ✅ measured | qs-dark.png |
+| Status bar time 23px (≈16sp) — larger than AOSP's 14sp | ✅ measured | settings-dark.png |
+| Card title 17px (≈12sp) sits BELOW row-label size (≈13sp); subtext 17px (≈11–12sp); fine print "90%" 14px (≈10sp) | ✅ measured | headphones-nc-dark.png |
+| Slider tick labels unreadable (luminance < 28 in sanitized captures); settings value/subtext strips clipped | 📌 not measurable | headphones-nc-dark.png; settings-dark.png |
+
+Notes: the serif title faces are proprietary, so their sp equivalence
+assumes cap ≈ 0.70em and is approximate. Corroborates the 2026-11-14
+finding "Hero titles use the NType82 serif typewriter face, functional
+text Geist" — the serif appears at sub-page title sizes too (≈17sp).

@@ -54,6 +54,49 @@ as the cautionary example, not a pattern to copy. This spec's rule stands:
 | NDot 55 | logotype & product names ONLY | leading 90%, tracking 0, never combined with other fonts in one layout |
 | Lettera Mono LL | small informative/legal text | 5–10pt only, font width 90%, leading 110%, never at display size |
 
+## Nothing OS 5 system UI type scale [device-measured 2026-11-28]
+
+Measured from the sanitized device screenshots (`docs/screenshots/`,
+720×1600, dark style) by ink-height row profiling of tight text crops.
+Density 2.0 assumed (720px = 360dp — corroborated by 88px settings rows
+= 44dp). sp estimates = cap height ÷ 2 ÷ 0.715 (Geist cap ratio, rendered
+from the OFL font file) rounded to the nearest common Android step, ±1sp.
+The serif title faces are proprietary, so their sp equivalence assumes
+cap ≈ 0.70em and is approximate.
+
+| Role | Measured text (shot) | Ink measured | px | Est. size |
+|---|---|---|---|---|
+| Page title, top level — serif typewriter | "Settings" (settings-dark) | 'S' cap, incl ~1px round overshoot | 45px | ≈31–32sp |
+| Page title, sub-page — serif typewriter | "My devices" (headphones-nc-dark) | 'M' cap | 24px | ≈17sp |
+| Card title | "Noise Cancellation" (headphones-nc-dark) | 'N' cap | 17px | ≈12sp |
+| List row label | "Lock screen" / "Notifications" / "Customisation" (settings-dark) | 'L' cap / asc–baseline | 18–20px | ≈13sp |
+| Search placeholder (dim) | "Search" (settings-dark) | asc–baseline | 22px | ≈15sp |
+| QS tile label | "Wi-Fi" / "Torch" / "Modes" (qs-dark) | cap | 16–18px | ≈12sp |
+| QS clock | "16:05" (qs-dark) | digit height, weight ≈600 | 24px | ≈17sp |
+| QS date (dim) | "Sat 14 Nov" (qs-dark) | asc–baseline | 19px | ≈13sp |
+| Status bar time | "16:05" (settings-dark) | digit height | 23px | ≈16sp |
+| Battery % (QS header) | "54%" (qs-dark) | digit height | 20px | ≈14sp |
+| QS status pill | "…evice is con…" (qs-dark) | asc–baseline, weight ≈500 | 26px | ≈17sp |
+| Card subtext (dim) | "On · Adaptive" (headphones-nc-dark) | asc–baseline | 17px | ≈11–12sp |
+| Fine print (dim) | "90%" (headphones-nc-dark) | digit height | 14px | ≈10sp |
+
+Not measurable in the sanitized shots: slider tick labels ("Low/Mid/High/
+Adaptive" — luminance below 28, dimmer than ~10% white) and the settings
+row value/subtext lines (clipped/blur strips in the sanitized captures).
+
+Findings:
+- Status text runs larger than stock Android (status time ≈16sp vs AOSP
+  14sp); the QS clock is only ≈17sp but heavy (≈600) — the "chunky" look
+  is weight, not size.
+- Sub-page serif titles exist (≈17sp): the typewriter face is not only a
+  top-level hero move.
+- Card titles (≈12sp) sit BELOW list row labels (≈13sp) — hierarchy comes
+  from weight + tracking, not size.
+- Dim roles (date, subtext, placeholder, fine print) stay 50% white.
+
+The dashbord scale below is the reference app's own scale — prefer this
+device-measured table when building Nothing-style UI.
+
 ## App type scale [impl — measured from the dashbord reference implementation]
 
 Base font 16px. All label-class text is UPPERCASE + tracking.
