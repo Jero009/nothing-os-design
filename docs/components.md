@@ -10,9 +10,14 @@ VALUES, never literals in components.
   elevated/pressed `#242424`, inset tile `rgba(ink, 0.055)`.
 - Light: bg `#EBEBEB`, card `#FFFFFF`, pressed `#E2E2E2`.
 - Classic cards: borderless — separation from surface contrast alone.
-- OS 5 cards: frosted translucent + exactly ONE hairline (white 10% / black
-  8%). Never a second accent border. Overlays (alerts, action sheets,
-  popovers) use the SOLID fallback — never frost over a dimmed backdrop.
+- OS 5 cards (app-side): frosted translucent + exactly ONE hairline (white
+  10% / black 8%). Never a second accent border. Overlays (alerts, action
+  sheets, popovers) use the SOLID fallback — never frost over a dimmed
+  backdrop. ⚠️ Scope: on the OS itself, only wallpaper-anchored surfaces
+  (home/lock) are translucent — system app pages stay opaque #1B1B1B on
+  #000000 (device-measured, tokens.md). App-side card frosting is a
+  deliberate extrapolation of the official frosted material, not a copy of
+  system behavior.
 - Dot-grid substrate: `radial-gradient` 1px dots on 12px grid; in OS 5 dimmed
   to 4–5% alpha (barely-there depth cue, dots live BEHIND cards).
 - Headers: borderless and shadowless — kill any framework drop-shadow under

@@ -214,3 +214,16 @@ Notes: the corrections are applied to typography.md in the same revision
 survives the cross-check — Phone (3) shows the same tier at ≈18–22sp, and
 the 720-device 'M' cap re-measures at 32px (≈22sp assumed density), not the
 24px x-height read of the first pass.
+
+## Sourcing & labeling pass (2026-11-28, dashbord-only truth audit)
+
+Repo-wide sweep of every dashbord citation. Most already carry
+[impl]/"reference implementation" labels (tokens.md header, components.md
+header, typography.md app scale, feedback.md sources, SKILL.md tiers).
+
+| Finding | Verdict | Source |
+|---|---|---|
+| OS 5 app pages do NOT frost — only wallpaper-anchored surfaces are translucent; components.md stated "OS 5 cards: frosted" as OS behavior without the app-side scope | ⚠️ corrected same day | tokens.md measured section (2026-11-14 device pass) |
+| Live site presented dashbord-only values (radii scale, motion 140/280/400, kicker/label tracking) without [impl] tags; tags added, card demo frost scope noted | ⚠️ fixed | docs/index.html |
+| Token exports carried a stale version (1.3.0) not matching releases; now version-locked to the release | ⚠️ fixed | tokens.json meta; tokens.css header |
+| dashbord-only values that remain, all labeled [impl]: classic surfaces #1A1A1A/#242424 (system measures #1B1B1B), accent #D71A21 (canonical #D71921), radii 8/16/24 + 12/20/28, spacing 4/8/12/16/24/32, motion 140/280/400 + easings + press-scale 0.97, tracking 0.10/0.12/0.16/0.18em, app type scale, alert/row/chip metrics, scrub-tick + duck-and-ding patterns | 📌 impl by definition, labeled | tokens.md; components.md; feedback.md; tokens.json; tokens.css |

@@ -196,7 +196,7 @@
 <body>
 <header>
   <div class="bar">
-    <div class="brand"><b>NOTHING OS DESIGN</b> · MEASURED SPEC · v1.3.0</div>
+    <div class="brand"><b>NOTHING OS DESIGN</b> · MEASURED SPEC · v1.4.2</div>
     <div class="tgl" role="group" aria-label="Style">
       <button data-style="classic" aria-pressed="true">CLASSIC</button>
       <button data-style="os5" aria-pressed="false">OS 5</button>
@@ -268,7 +268,8 @@
 
     <div class="k">Card — borderless classic · one hairline + frost in OS 5</div>
     <div class="card"><div class="tile"><span>SLEEP SCORE</span><strong>82</strong></div>
-      <div class="foot-note">Switch to OS 5 above: frosted surface + hairline + dot-grid substrate.</div>
+      <div class="foot-note">Switch to OS 5 above: frosted surface + hairline + dot-grid substrate.
+      App-side extrapolation — the OS itself only frosts wallpaper-anchored surfaces; system app pages stay opaque.</div>
     </div>
 
     <div class="k">Input — fill only, no border</div>
@@ -324,7 +325,7 @@
     <div class="swatches" id="dark"></div>
     <div class="k">Light surfaces [impl]</div>
     <div class="swatches" id="light"></div>
-    <div class="k">Radii scale — classic 8/16/24 · OS 5 12/20/28</div>
+    <div class="k">Radii scale [impl] — classic 8/16/24 · OS 5 12/20/28 (measured OS cards ≈12–13dp)</div>
     <div class="rad">
       <div><div class="rb" style="border-radius:8px"></div><small>sm 8</small></div>
       <div><div class="rb" style="border-radius:16px"></div><small>md 16</small></div>
@@ -333,7 +334,7 @@
       <div><div class="rb" style="border-radius:20px"></div><small>OS md 20</small></div>
       <div><div class="rb" style="border-radius:28px"></div><small>OS lg 28</small></div>
     </div>
-    <div class="k">Motion — 140 / 280 / 400 ms, decel entrance, no bounce (reduced-motion respected)</div>
+    <div class="k">Motion [impl] — 140 / 280 / 400 ms, decel entrance, no bounce (reduced-motion respected)</div>
     <div class="row">
       <button class="btn btn-g" data-ms="140">PLAY 140MS</button>
       <button class="btn btn-g" data-ms="280">PLAY 280MS</button>
@@ -364,9 +365,9 @@
     Classic: Space Grotesk + Doto + Space Mono. Numerals never render in the body face.
     Note: Doto is <b>not</b> a Nothing font — Nothing's dot-matrix faces (NDot 55/57) are
     proprietary and can't legally ship, so Doto (Google Fonts, SIL OFL) stands in for them.</p>
-    <div class="spec"><div class="lbl">KICKER · 0.16em tracking · uppercase</div>
+    <div class="spec"><div class="lbl">KICKER · 0.16em tracking [impl] · uppercase</div>
       <div class="kicker">Nothing OS design · measured spec</div></div>
-    <div class="spec"><div class="lbl">LABEL · 0.10em · uppercase · dim</div>
+    <div class="spec"><div class="lbl">LABEL · 0.10em [impl] · uppercase · dim</div>
       <div class="label">SLEEP SCORE</div></div>
     <div class="spec"><div class="lbl">BODY · dim ink · 1.5 line</div>
       <div class="body-t">Hierarchy comes from size jumps, uppercase kickers with wide

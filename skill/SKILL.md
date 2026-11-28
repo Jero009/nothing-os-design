@@ -1,6 +1,6 @@
 ---
 name: nothing-os-design
-version: 1.4.1
+version: 1.4.2
 author: Hermes Agent
 license: MIT
 description: "Use when styling Nothing OS-style apps: tokens, accents."
