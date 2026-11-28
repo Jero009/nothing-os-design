@@ -1,6 +1,6 @@
 ---
 name: nothing-os-design
-version: 1.4.0
+version: 1.4.1
 author: Hermes Agent
 license: MIT
 description: "Use when styling Nothing OS-style apps: tokens, accents."
@@ -175,7 +175,8 @@ Full tables: `references/tokens.md`.
   tracking are the signature move.
 - OS 5 system-UI type scale is device-measured with a multi-device
   cross-check (2026-11-28): hero serif titles ≈22–23sp, sub-page serif titles
-  ≈16–17sp, row labels ≈13sp, body ≈13–15sp; card titles sit below row-label
+  ≈18–22sp ('M' cap 32px on the 720-device — the first pass mis-read the
+  x-height as the cap), row labels ≈13sp, body ≈13–15sp; card titles sit below row-label
   size; status-clock size varies per device. Full table:
   `docs/typography.md` (repo) — treat absolute sp as ±10–15% on devices
   without a density readout.

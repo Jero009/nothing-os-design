@@ -67,7 +67,7 @@ cap ≈ 0.70em and is approximate.
 | Role | Measured text (shot) | Ink measured | px | Est. size |
 |---|---|---|---|---|
 | Page title, top level — serif typewriter | "Settings" (settings-dark) | 'S' cap, incl ~1px round overshoot | 45px | ≈31–32sp |
-| Page title, sub-page — serif typewriter | "My devices" (headphones-nc-dark) | 'M' cap | 24px | ≈17sp |
+| Page title, sub-page — serif typewriter | "My devices" (headphones-nc-dark) | 'M' cap | 32px | ≈22sp (density-2.0 assumed) |
 | Card title | "Noise Cancellation" (headphones-nc-dark) | 'N' cap | 17px | ≈12sp |
 | List row label | "Lock screen" / "Notifications" / "Customisation" (settings-dark) | 'L' cap / asc–baseline | 18–20px | ≈13sp |
 | Search placeholder (dim) | "Search" (settings-dark) | asc–baseline | 22px | ≈15sp |
@@ -90,8 +90,8 @@ Findings:
   "larger than AOSP": that 23px band was the adjacent notification icons;
   the clock digits are 16px. Cross-device status clocks vary — see the
   validation section below.)
-- Sub-page serif titles exist (≈17sp): the typewriter face is not only a
-  top-level hero move.
+- Sub-page serif titles exist (≈22sp at the assumed density): the typewriter
+  face is not only a top-level hero move.
 - Card titles (≈12sp) sit BELOW list row labels (≈13sp) — hierarchy comes
   from weight + tracking, not size.
 - Dim roles (date, subtext, placeholder, fine print) stay 50% white.
@@ -121,7 +121,7 @@ Measured ink heights per role (px):
 | Status-bar clock digits | 16 | 32–36 | 27 | 21 | 31 (stock Android 17) |
 | Page/section serif title (asc–desc) | 57 ("Settings") | 63–64 | 78–84 | — | — |
 | Page title (dot face, cap) | — | — | — | — | 46 ("SCANNING") |
-| Sub-page title | 24 cap ("My devices") | 36–45 | — | — | — |
+| Sub-page title | 32 cap ("My devices" — first pass read the x-height, 24px) | 36–45 | — | — | — |
 | Card/list title | 17 cap | — | 40–41 asc | — | — |
 | Row label | 18–20 cap | — | 28–41 asc | 19–20 asc | — |
 | Body text | — | 32 asc (≈14–15sp) | 34 asc | 19–29 | 26 asc (≈13sp) |
@@ -131,8 +131,10 @@ Measured ink heights per role (px):
 Findings:
 
 - The method validates: re-measuring the 720×1600 shots reproduces the table
-  within ±1–3px per role, and Nothing X app text at the verified 420 dpi
-  lands on clean sp steps (body ≈13sp, page title ≈24–25sp).
+  within ±1–3px on most roles (two first-pass mis-reads surfaced and are
+  corrected: the status clock and the sub-page title cap), and Nothing X app
+  text at the verified 420 dpi lands on clean sp steps (body ≈13sp, page
+  title ≈24–25sp).
 - Correction: the earlier "Status bar time 23px ≈16sp" measured the adjacent
   notification-icon row (icons are 23px tall), not the clock — the clock
   digits are 16px (≈11sp at the assumed density). Status-clock size is NOT
@@ -149,7 +151,9 @@ Findings:
   "QS separate vs Classic" material. Tile-label sp differs between them;
   don't mix measurements across the two layouts.
 - Serif sub-page titles are confirmed on a second device: Phone (3) shows
-  the same tier at ≈16sp (36–45px @2.8625), corroborating ≈17sp above.
+  the same tier at ≈18–22sp (36–45px @2.8625), consistent with the corrected
+  ≈22sp above. (The first pass read the "My devices" x-height, 24px, as the
+  cap; glyph-level profiling gives 'M' cap = 32px.)
 
 The dashbord scale below is the reference app's own scale — prefer this
 device-measured table when building Nothing-style UI.
